@@ -408,7 +408,7 @@ class _LoginScreenState extends State<LoginScreen> {
     return Container(
       height: screenHeight / 2,
       child: Image.asset(
-        'images/cars.jpg',
+        '',
         fit: BoxFit.cover,
       ),
     );
