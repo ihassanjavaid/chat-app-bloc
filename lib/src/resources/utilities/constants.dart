@@ -80,6 +80,18 @@ const Icon kUserMessagesIconActive = Icon(
   color: Colors.brown ,
 );
 
+const Icon kUserChatIcon = Icon(
+  FontAwesomeIcons.comments,
+  size: 30,
+  color: Colors.grey,
+);
+
+const Icon kUserChatIconActive = Icon(
+  FontAwesomeIcons.comments,
+  size: 30,
+  color: Colors.brown ,
+);
+
 const Icon kPeopleIcon = Icon(
   Icons.people,
   size: 30,
@@ -93,9 +105,25 @@ const Icon kPeopleIconActive = Icon(
 );
 
 const TextStyle kAppBarTextStyle = TextStyle(
-fontSize: 30,
-fontStyle: FontStyle.normal,
-color: Colors.brown,
+  fontSize: 30,
+  fontStyle: FontStyle.normal,
+  color: Colors.brown,
 );
 
+const kMessageContainerDecoration = BoxDecoration(
+  border: Border(
+    top: BorderSide(color: Colors.brown, width: 2.0),
+  ),
+);
 
+const kSendButtonTextStyle = TextStyle(
+  color: Colors.brown,
+  fontWeight: FontWeight.bold,
+  fontSize: 18.0,
+);
+
+const kMessageTextFieldDecoration = InputDecoration(
+  contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
+  hintText: 'Type your message here...',
+  border: InputBorder.none,
+);

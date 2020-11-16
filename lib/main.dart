@@ -1,7 +1,6 @@
-import 'package:flutter/foundation.dart';
+import 'package:the_chat_app/src/ui/chat_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:the_chat_app/src/ui/login_screen.dart';
+
 
 
 void main() async {
@@ -15,8 +14,9 @@ class ChatApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'The Chat App',
-      home: LoginScreen(),
+      home: ChatScreen(),
     );
   }
 }

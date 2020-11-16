@@ -90,12 +90,12 @@ class _LoginScreenState extends State<LoginScreen> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Icon(
-            FontAwesomeIcons.car,
+            FontAwesomeIcons.facebookMessenger,
             size: 50,
             color: Colors.white,
           ),
           Text(
-            "  Alfa's Garage",
+            '\tThe Chat App',
             style: TextStyle(
                 fontSize: 40, color: Colors.white, fontWeight: FontWeight.w400),
           ),
