@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:the_chat_app/src/ui/login_screen.dart';
 
 void main() {
   runApp(ChatApp());
@@ -10,8 +11,7 @@ class ChatApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      home: ,
+      home: LoginScreen(),
     );
   }
 }
-
