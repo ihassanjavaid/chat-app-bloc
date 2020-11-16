@@ -1,6 +1,6 @@
-# the_chat_app
+# CHAT APP BLOC
 
-A chat application using flutter's bloc pattern
+A chatting application based on flutter's _BLOC_ pattern
 
 ## Getting Started
 
@@ -14,3 +14,17 @@ A few resources to get you started if this is your first Flutter project:
 For help getting started with Flutter, view our
 [online documentation](https://flutter.dev/docs), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
+
+## Contributors
+
+- [Muhammad Osama Saleem](https://www.comsats.edu.pk/)
+- [Muhammad Talha Bin Mansoor](https://www.comsats.edu.pk/)
+- [Muhammad Hasan Malik](https://www.comsats.edu.pk/)
+
+### Attributes
+
+~~First Project~~ _Perfect Project_
+
+### Copyrights
+
+COMSATS University Islamabad © | The Punisher Labs ™
