@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_login/flutter_login.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -7,8 +8,8 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
 
-  Future<String> _authUser(LoginData data) {
-    print('Name: ${data.name}, Password: ${data.password}');
+  Future<String> _authUser(/*LoginData */data) {
+    /*print('Name: ${data.name}, Password: ${data.password}');
     return Future.delayed(loginTime).then((_) {
       if (!users.containsKey(data.name)) {
         return 'Username not exists';
@@ -17,17 +18,17 @@ class _LoginScreenState extends State<LoginScreen> {
         return 'Password does not match';
       }
       return null;
-    });
+    });*/
   }
 
   Future<String> _recoverPassword(String name) {
-    print('Name: $name');
+    /*print('Name: $name');
     return Future.delayed(loginTime).then((_) {
       if (!users.containsKey(name)) {
         return 'Username not exists';
       }
       return null;
-    });
+    });*/
   }
 
   @override
@@ -38,9 +39,9 @@ class _LoginScreenState extends State<LoginScreen> {
       onLogin: _authUser,
       onSignup: _authUser,
       onSubmitAnimationCompleted: () {
-        Navigator.of(context).pushReplacement(MaterialPageRoute(
+        /*Navigator.of(context).pushReplacement(MaterialPageRoute(
           builder: (context) => DashboardScreen(),
-        ));
+        ));*/
       },
       onRecoverPassword: _recoverPassword,
     );
