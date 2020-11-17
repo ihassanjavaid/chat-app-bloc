@@ -3,9 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:the_chat_app/src/resources/services/auth_service.dart';
-import 'package:the_chat_app/src/resources/services/firestore_service.dart';
+import 'package:the_chat_app/src/ui/main_screen.dart';
 import 'package:the_chat_app/src/ui/widgets/alertComponent.dart';
 import 'package:the_chat_app/src/ui/widgets/customTextField.dart';
 
@@ -172,6 +170,8 @@ class _LoginScreenState extends State<LoginScreen> {
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(5)),
                         onPressed: () async {
+                          Navigator.pushReplacementNamed(
+                              context, MainScreen.id);
                           setState(() {
                             _showSpinner = true;
                           });
@@ -188,9 +188,9 @@ class _LoginScreenState extends State<LoginScreen> {
                           } catch (e) {
                             AlertComponent()
                                 .generateAlert(
-                                context: context,
-                                title: "Invalid Credentials",
-                                description: e.toString())
+                                    context: context,
+                                    title: "Invalid Credentials",
+                                    description: e.toString())
                                 .show();
                             print(e);
                           }
@@ -347,9 +347,9 @@ class _LoginScreenState extends State<LoginScreen> {
                             } catch (e) {
                               AlertComponent()
                                   .generateAlert(
-                                  context: context,
-                                  title: "Error",
-                                  description: e)
+                                      context: context,
+                                      title: "Error",
+                                      description: e)
                                   .show();
                               print(e);
                             }
