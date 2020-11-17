@@ -1,3 +1,4 @@
+/*
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 
@@ -53,10 +54,12 @@ class _ChatScreenState extends State<ChatScreen> {
                     )
                   ],
                 ),
-                /*Image.asset(
+                */
+/*Image.asset(
                   "assets/images/${post["image"]}",
                   height: double.infinity,
-                )*/
+                )*/ /*
+
               ],
             ),
           )));
@@ -94,7 +97,8 @@ class _ChatScreenState extends State<ChatScreen> {
             const SizedBox(
               height: 10,
             ),
-            /*AnimatedOpacity(
+            */
+/*AnimatedOpacity(
               duration: const Duration(milliseconds: 200),
               opacity: closeTopContainer?0:1,
               child: AnimatedContainer(
@@ -103,7 +107,8 @@ class _ChatScreenState extends State<ChatScreen> {
                   alignment: Alignment.topCenter,
                   height: closeTopContainer?0:categoryHeight,
                   child: categoriesScroller),
-            ),*/
+            ),*/ /*
+
             Expanded(
                 child: ListView.builder(
                     controller: controller,
@@ -138,13 +143,16 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 }
 
+*/
 /*class CategoriesScroller extends StatelessWidget {
   const CategoriesScroller();
 
   @override
   Widget build(BuildContext context) {
     final double categoryHeight = MediaQuery.of(context).size.height * 0.30 - 50;
-    *//*return SingleChildScrollView(
+    */ /*
+*/
+/*return SingleChildScrollView(
       physics: BouncingScrollPhysics(),
       scrollDirection: Axis.horizontal,
       child: Container(
@@ -158,64 +166,143 @@ class _ChatScreenState extends State<ChatScreen> {
           ),
         ),
       ),
-    );*//*
+    );*/ /*
+*/
+/*
     return Container();
   }
-}*/
+}*/ /*
+
 
 const CHATS = [
   {
     "name":"Person 1",
     "lastseen":"20 hours ago",
     "message":"Hello! This is a sample message",
-    
+
   },
   {
     "name":"Person 2",
     "lastseen":"20 hours ago",
     "message":"Hello! This is a sample message",
-    
+
   },
   {
     "name":"Person 3",
     "lastseen":"20 hours ago",
     "message":"Hello! This is a sample message",
-    
+
   },
   {
     "name":"Person 4",
     "lastseen":"20 hours ago",
     "message":"Hello! This is a sample message",
-    
+
   },
   {
     "name":"Person 5",
     "lastseen":"20 hours ago",
     "message":"Hello! This is a sample message",
-    
+
   },
   {
     "name":"Person 6",
     "lastseen":"20 hours ago",
     "message":"Hello! This is a sample message",
-    
+
   },
   {
     "name":"Person 7",
     "lastseen":"20 hours ago",
     "message":"Hello! This is a sample message",
-    
+
   },
   {
     "name":"Person 8",
     "lastseen":"20 hours ago",
     "message":"Hello! This is a sample message",
-    
+
   },
   {
     "name":"Person 9",
     "lastseen":"20 hours ago",
     "message":"Hello! This is a sample message",
-    
+
   },
-];
+];*/
+
+import 'package:flutter/material.dart';
+
+class ChatScreen extends StatefulWidget {
+  static const String id = 'chat_screen';
+
+  @override
+  _ChatScreenState createState() => _ChatScreenState();
+}
+
+class _ChatScreenState extends State<ChatScreen> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Container(
+        height: MediaQuery.of(context).size.height,
+        width: MediaQuery.of(context).size.width,
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Colors.deepPurpleAccent, Colors.deepPurple],
+            stops: [0.2, 0.6],
+          ),
+        ),
+        child: Stack(
+          children: [
+            //ChatThread(),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 28.0),
+              child: ChatThread(title: 'Chat 1', color: Colors.white,),
+            ),
+            ChatThread(title: 'Chat 2', color: Colors.brown,),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+// ignore: must_be_immutable
+class ChatThread extends StatelessWidget {
+  String titleText;
+  Color containerColor;
+
+  ChatThread({Key key, @required String title, @required Color color}) : super(key: key){
+    titleText = title;
+    containerColor = color;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return DraggableScrollableSheet(
+      minChildSize: 0.1,
+      initialChildSize: 0.2,
+      maxChildSize: 0.8,
+      builder: (BuildContext context, ScrollController scrollController) {
+      return SingleChildScrollView(
+        controller: scrollController,
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+            color: containerColor,
+          ),
+          height: MediaQuery.of(context).size.height,
+          child: Text(
+            titleText,
+            style: TextStyle(
+              fontSize: 36
+            ),
+          ),
+        ),
+      );
+    },
+
+    );
+  }
+}
