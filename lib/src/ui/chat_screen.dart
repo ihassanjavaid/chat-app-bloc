@@ -1,123 +1,221 @@
-import 'package:flutter/cupertino.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:the_chat_app/src/resources/utilities/constants.dart';
 
 class ChatScreen extends StatefulWidget {
-  static const String id = "ChatScreen";
+  static const String id = 'chat_screen';
+
   @override
   _ChatScreenState createState() => _ChatScreenState();
 }
 
 class _ChatScreenState extends State<ChatScreen> {
-  //@override
-  /*Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.deepPurpleAccent,
-      body: GestureDetector(
-        onVerticalDragStart: (DragStartDetails details){
-          showChat(details);
-          showBottomSheet(
-              context: context,
-              builder: (context) => Container(
-                color: Colors.red,
-              ));
-        },
-        child: Container(
-          height: double.infinity,
-          width: double.infinity,
-          color: Colors.deepPurpleAccent,
-        ),
-      ),
-    );
-  }*/
+  //final CategoriesScroller categoriesScroller = CategoriesScroller();
+  ScrollController controller = ScrollController();
+  bool closeTopContainer = false;
+  double topContainer = 0;
+
+  List<Widget> itemsData = [];
+
+  void getPostsData() {
+    List<dynamic> responseList = CHATS;
+    List<Widget> listItems = [];
+    responseList.forEach((post) {
+      listItems.add(Container(
+          height: 150,
+          margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(20.0)), color: Colors.white, boxShadow: [
+            BoxShadow(color: Colors.black.withAlpha(100), blurRadius: 10.0),
+          ]),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      post["name"],
+                      style: const TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+                    ),
+                    Text(
+                      post["lastseen"],
+                      style: const TextStyle(fontSize: 17, color: Colors.grey),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    AutoSizeText(
+                      post["message"],
+                      style: const TextStyle(fontSize: 20, color: Colors.black),
+                      maxLines: 1,
+                      overflow: TextOverflow.fade,
+                    )
+                  ],
+                ),
+                /*Image.asset(
+                  "assets/images/${post["image"]}",
+                  height: double.infinity,
+                )*/
+              ],
+            ),
+          )));
+    });
+    setState(() {
+      itemsData = listItems;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getPostsData();
+    controller.addListener(() {
+
+      double value = controller.offset/119;
+
+      setState(() {
+        topContainer = value;
+        closeTopContainer = controller.offset > 50;
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: Builder(builder: (context) {
-      return GestureDetector(
-        onVerticalDragStart: (DragStartDetails details) {
-          showChat(details);
-          showBottomSheet(
-              context: context,
-              builder: (context) {
-                return Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: <Widget>[
-                    Expanded(
-                      child: Padding(
-                          padding: EdgeInsets.all(8.0), child: Container()),
-                    ),
-                    Container(
-                      decoration: kMessageContainerDecoration,
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: <Widget>[
-                          Expanded(
-                            child: TextField(
-                              //controller: messageTextController,
-                              onChanged: (value) {
-                                //_message = value;
-                              },
-                              decoration: kMessageTextFieldDecoration,
-                            ),
-                          ),
-                          FlatButton(
-                            onPressed: () async {
-                              /*final currentUser = await Auth().currentUser;
-                              // Create the message
-                              Message newMessage = Message(
-                                messageSender: currentUser.email,
-                                messageReceiver: this.user.email,
-                                messageText: _message,
-                                timestamp: DateTime.now().millisecondsSinceEpoch,
-                              );
-                              await FirestoreService().sendMessage(newMessage);
-                              messageTextController.clear();*/
-                            },
-                            child:
-                                /*Text(
-                      'Send',
-                      style: kSendButtonTextStyle,
-                    )*/
-                                Icon(
-                              Icons.send,
-                              color: Colors.brown,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                );
-              });
-        },
-        child: Container(
-          height: double.infinity,
-          width: double.infinity,
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [
-                  Colors.pinkAccent,
-                  Colors.pink,
-                  Colors.purpleAccent,
-                  Colors.purple
-                ],
-                stops: [
-                  0.1,
-                  0.2,
-                  0.7,
-                  0.9
-                ]),
-          ),
+    final Size size = MediaQuery.of(context).size;
+    final double categoryHeight = size.height*0.30;
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: Container(
+        height: size.height,
+        child: Column(
+          children: <Widget>[
+            const SizedBox(
+              height: 10,
+            ),
+            /*AnimatedOpacity(
+              duration: const Duration(milliseconds: 200),
+              opacity: closeTopContainer?0:1,
+              child: AnimatedContainer(
+                  duration: const Duration(milliseconds: 200),
+                  width: size.width,
+                  alignment: Alignment.topCenter,
+                  height: closeTopContainer?0:categoryHeight,
+                  child: categoriesScroller),
+            ),*/
+            Expanded(
+                child: ListView.builder(
+                    controller: controller,
+                    itemCount: itemsData.length,
+                    physics: BouncingScrollPhysics(),
+                    itemBuilder: (context, index) {
+                      double scale = 1.0;
+                      if (topContainer > 0.5) {
+                        scale = index + 0.5 - topContainer;
+                        if (scale < 0) {
+                          scale = 0;
+                        } else if (scale > 1) {
+                          scale = 1;
+                        }
+                      }
+                      return Opacity(
+                        opacity: scale,
+                        child: Transform(
+                          transform:  Matrix4.identity()..scale(scale,scale),
+                          alignment: Alignment.bottomCenter,
+                          child: Align(
+                              heightFactor: 0.7,
+                              alignment: Alignment.topCenter,
+                              child: itemsData[index]),
+                        ),
+                      );
+                    })),
+          ],
         ),
-      );
-    }));
-  }
-
-  void showChat(DragStartDetails details) {
-    // TODO check if dragging up
+      ),
+    );
   }
 }
+
+/*class CategoriesScroller extends StatelessWidget {
+  const CategoriesScroller();
+
+  @override
+  Widget build(BuildContext context) {
+    final double categoryHeight = MediaQuery.of(context).size.height * 0.30 - 50;
+    *//*return SingleChildScrollView(
+      physics: BouncingScrollPhysics(),
+      scrollDirection: Axis.horizontal,
+      child: Container(
+        margin: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+        child: FittedBox(
+          fit: BoxFit.fill,
+          alignment: Alignment.topCenter,
+          child: Row(
+            children: <Widget>[
+            ],
+          ),
+        ),
+      ),
+    );*//*
+    return Container();
+  }
+}*/
+
+const CHATS = [
+  {
+    "name":"Person 1",
+    "lastseen":"20 hours ago",
+    "message":"Hello! This is a sample message",
+    
+  },
+  {
+    "name":"Person 2",
+    "lastseen":"20 hours ago",
+    "message":"Hello! This is a sample message",
+    
+  },
+  {
+    "name":"Person 3",
+    "lastseen":"20 hours ago",
+    "message":"Hello! This is a sample message",
+    
+  },
+  {
+    "name":"Person 4",
+    "lastseen":"20 hours ago",
+    "message":"Hello! This is a sample message",
+    
+  },
+  {
+    "name":"Person 5",
+    "lastseen":"20 hours ago",
+    "message":"Hello! This is a sample message",
+    
+  },
+  {
+    "name":"Person 6",
+    "lastseen":"20 hours ago",
+    "message":"Hello! This is a sample message",
+    
+  },
+  {
+    "name":"Person 7",
+    "lastseen":"20 hours ago",
+    "message":"Hello! This is a sample message",
+    
+  },
+  {
+    "name":"Person 8",
+    "lastseen":"20 hours ago",
+    "message":"Hello! This is a sample message",
+    
+  },
+  {
+    "name":"Person 9",
+    "lastseen":"20 hours ago",
+    "message":"Hello! This is a sample message",
+    
+  },
+];
