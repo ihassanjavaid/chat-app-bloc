@@ -233,6 +233,8 @@ const CHATS = [
 
 import 'package:flutter/material.dart';
 
+import 'chat_thread_screen.dart';
+
 class ChatScreen extends StatefulWidget {
   static const String id = 'chat_screen';
 
@@ -253,56 +255,9 @@ class _ChatScreenState extends State<ChatScreen> {
             stops: [0.2, 0.6],
           ),
         ),
-        child: Stack(
-          children: [
-            //ChatThread(),
-            Padding(
-              padding: const EdgeInsets.only(bottom: 28.0),
-              child: ChatThread(title: 'Chat 1', color: Colors.white,),
-            ),
-            ChatThread(title: 'Chat 2', color: Colors.brown,),
-          ],
-        ),
+        child: ChatThread(),
       ),
     );
   }
 }
 
-// ignore: must_be_immutable
-class ChatThread extends StatelessWidget {
-  String titleText;
-  Color containerColor;
-
-  ChatThread({Key key, @required String title, @required Color color}) : super(key: key){
-    titleText = title;
-    containerColor = color;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return DraggableScrollableSheet(
-      minChildSize: 0.1,
-      initialChildSize: 0.2,
-      maxChildSize: 0.8,
-      builder: (BuildContext context, ScrollController scrollController) {
-      return SingleChildScrollView(
-        controller: scrollController,
-        child: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20),
-            color: containerColor,
-          ),
-          height: MediaQuery.of(context).size.height,
-          child: Text(
-            titleText,
-            style: TextStyle(
-              fontSize: 36
-            ),
-          ),
-        ),
-      );
-    },
-
-    );
-  }
-}

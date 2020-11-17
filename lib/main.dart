@@ -19,7 +19,7 @@ class ChatApp extends StatelessWidget {
       initialRoute: ChatScreen.id,
       routes: {
         LoginScreen.id: (context) => LoginScreen(),
-        MainScreen.id: (context) => MainScreen(),
+        //MainScreen.id: (context) => MainScreen(),
         ChatScreen.id: (context) => ChatScreen(),
       },
     );

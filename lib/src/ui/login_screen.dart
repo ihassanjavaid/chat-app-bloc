@@ -169,14 +169,14 @@ class _LoginScreenState extends State<LoginScreen> {
                             left: 38, right: 38, top: 15, bottom: 15),
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(5)),
-                        onPressed: () async {
+                        /*onPressed: () async {
                           Navigator.pushReplacementNamed(
                               context, MainScreen.id);
                           setState(() {
                             _showSpinner = true;
                           });
                           try {
-                            /*final SharedPreferences pref =
+                            *//*final SharedPreferences pref =
                             await SharedPreferences.getInstance();
                             await pref.setString(
                                 'email', removeSpaces(this.email));
@@ -184,7 +184,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 email: removeSpaces(this.email),
                                 password: this.password);
                             await _firestoreService.postToken();
-                            await _decideRoute();*/
+                            await _decideRoute();*//*
                           } catch (e) {
                             AlertComponent()
                                 .generateAlert(
@@ -197,7 +197,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           setState(() {
                             _showSpinner = false;
                           });
-                        },
+                        },*/
                       )
                     ],
                   ),
