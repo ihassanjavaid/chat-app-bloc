@@ -243,6 +243,8 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
+  bool _isChatHidden = true;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -255,7 +257,30 @@ class _ChatScreenState extends State<ChatScreen> {
             stops: [0.2, 0.6],
           ),
         ),
-        child: ChatThread(),
+        child: Stack(
+          //mainAxisSize: MainAxisSize.max,
+          children: [
+            Align(
+              alignment: _isChatHidden ?
+              Alignment.center : Alignment.topLeft,
+              child: Text(
+                'The Cabinet',
+                style: TextStyle(
+                  fontSize: 35,
+                  fontWeight: FontWeight.bold
+                ),
+              ),
+            ),
+            GestureDetector(
+                onTapDown: (details){
+                  setState(() {
+                    _isChatHidden = !_isChatHidden;
+                  });
+                },
+                child: ChatThread()
+            ),
+          ],
+        ),
       ),
     );
   }

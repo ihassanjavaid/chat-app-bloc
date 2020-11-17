@@ -15,7 +15,7 @@ class ChatThread extends StatelessWidget {
     return DraggableScrollableSheet(
       minChildSize: 0.1,
       initialChildSize: 0.1,
-      maxChildSize: 1.0,
+      maxChildSize: 0.9,
       builder: (BuildContext context, ScrollController scrollController) {
         return SingleChildScrollView(
           controller: scrollController,
@@ -24,7 +24,7 @@ class ChatThread extends StatelessWidget {
               borderRadius: BorderRadius.circular(20),
               color: Colors.white,
             ),
-            height: MediaQuery.of(context).size.height,
+            height: MediaQuery.of(context).size.height*0.9,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -71,7 +71,7 @@ class ChatThread extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             Text(
-                              'Group\tName',
+                              'The\tCabinet',
                               style: TextStyle(
                                   fontSize: 18,
                                   fontWeight: FontWeight.bold,
