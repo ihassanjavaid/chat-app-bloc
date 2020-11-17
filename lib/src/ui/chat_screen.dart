@@ -46,10 +46,7 @@ class _ChatScreenState extends State<ChatScreen> {
                   children: <Widget>[
                     Expanded(
                       child: Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child:
-                          Container()
-                      ),
+                          padding: EdgeInsets.all(8.0), child: Container()),
                     ),
                     Container(
                       decoration: kMessageContainerDecoration,
@@ -79,11 +76,11 @@ class _ChatScreenState extends State<ChatScreen> {
                               messageTextController.clear();*/
                             },
                             child:
-                            /*Text(
+                                /*Text(
                       'Send',
                       style: kSendButtonTextStyle,
                     )*/
-                            Icon(
+                                Icon(
                               Icons.send,
                               color: Colors.brown,
                             ),
@@ -121,6 +118,6 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   void showChat(DragStartDetails details) {
-    /// TODO check if dragging up
+    // TODO check if dragging up
   }
 }
