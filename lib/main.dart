@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:the_chat_app/src/ui/chat_screen.dart';
 import 'package:the_chat_app/src/ui/login_screen.dart';
-import 'package:the_chat_app/src/ui/main_screen.dart';
 
 void main() async {
   /*WidgetsFlutterBinding.ensureInitialized();
@@ -19,7 +18,6 @@ class ChatApp extends StatelessWidget {
       initialRoute: ChatScreen.id,
       routes: {
         LoginScreen.id: (context) => LoginScreen(),
-        //MainScreen.id: (context) => MainScreen(),
         ChatScreen.id: (context) => ChatScreen(),
       },
     );
