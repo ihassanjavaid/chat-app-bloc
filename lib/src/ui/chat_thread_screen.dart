@@ -11,6 +11,7 @@ class ChatThread extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    //showBottomSheet(context: context,builder: (buildContext){});
     return DraggableScrollableSheet(
       minChildSize: 0.1,
       initialChildSize: 0.1,

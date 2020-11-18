@@ -242,8 +242,25 @@ class ChatScreen extends StatefulWidget {
   _ChatScreenState createState() => _ChatScreenState();
 }
 
-class _ChatScreenState extends State<ChatScreen> {
+class _ChatScreenState extends State<ChatScreen>
+    with SingleTickerProviderStateMixin{
   bool _isChatHidden = true;
+
+  AnimationController _animationController;
+  Animation _animation;
+  //Tween _tween =
+
+  @override
+  void initState() {
+    _animationController =
+        AnimationController(vsync: this, duration: Duration(seconds: 1));
+    _animation = Tween<Offset>(begin: Offset(0, 0), end: Offset(-0.4, -8))
+        .animate(_animationController);
+
+    /*_animationController.forward().whenComplete(() {
+      // put here the stuff you wanna do when animation completed!
+    });*/
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -263,18 +280,24 @@ class _ChatScreenState extends State<ChatScreen> {
             Align(
               alignment: _isChatHidden ?
               Alignment.center : Alignment.topLeft,
-              child: Text(
-                'The Cabinet',
-                style: TextStyle(
-                  fontSize: 35,
-                  fontWeight: FontWeight.bold
+              child: SlideTransition(
+                position: _animation,
+                child: Text(
+                  'The Cabinet',
+                  style: TextStyle(
+                    fontSize: 35,
+                    fontWeight: FontWeight.bold
+                  ),
                 ),
               ),
             ),
             GestureDetector(
                 onTapDown: (details){
                   setState(() {
-                    _isChatHidden = !_isChatHidden;
+                    //_isChatHidden = !_isChatHidden;
+                    _animationController.forward().whenComplete(() {
+                      _animationController.reverse();
+                    });
                   });
                 },
                 child: ChatThread()
