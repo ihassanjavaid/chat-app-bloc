@@ -7,8 +7,7 @@ class ChatThread extends StatelessWidget {
   /*String titleText;
   Color containerColor;*/
 
-  ChatThread({Key key})
-      : super(key: key);
+  ChatThread({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +23,7 @@ class ChatThread extends StatelessWidget {
               borderRadius: BorderRadius.circular(20),
               color: Colors.white,
             ),
-            height: MediaQuery.of(context).size.height*0.9,
+            height: MediaQuery.of(context).size.height * 0.9,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -32,7 +31,11 @@ class ChatThread extends StatelessWidget {
                   height: 5,
                   width: double.maxFinite,
                   child: Padding(
-                    padding: const EdgeInsets.only(top: 18.0, left: 120, right: 120),
+                    padding: const EdgeInsets.only(
+                      top: 18.0,
+                      left: 120,
+                      right: 120,
+                    ),
                     child: Divider(
                       color: Colors.black54,
                       thickness: 5,
@@ -177,7 +180,9 @@ class ChatThread extends StatelessWidget {
                               Padding(
                                 padding: const EdgeInsets.only(top: 2.0),
                                 child: Container(
-                                  width: (MediaQuery.of(context).size.width-10) / 2,
+                                  width:
+                                      (MediaQuery.of(context).size.width - 10) /
+                                          2,
                                   height: 40,
                                   decoration: BoxDecoration(
                                       color: grey,
