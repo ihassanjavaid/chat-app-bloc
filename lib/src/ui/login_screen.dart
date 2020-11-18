@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
-import 'package:the_chat_app/src/ui/main_screen.dart';
 import 'package:the_chat_app/src/ui/widgets/alertComponent.dart';
 import 'package:the_chat_app/src/ui/widgets/customTextField.dart';
 
@@ -162,6 +161,9 @@ class _LoginScreenState extends State<LoginScreen> {
                         child: Container(),
                       ),
                       FlatButton(
+                        onPressed: () {
+                          // TODO Add functionality
+                        },
                         child: Text("Login"),
                         color: Colors.brown,
                         textColor: Colors.white,
@@ -176,7 +178,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             _showSpinner = true;
                           });
                           try {
-                            *//*final SharedPreferences pref =
+                            */ /*final SharedPreferences pref =
                             await SharedPreferences.getInstance();
                             await pref.setString(
                                 'email', removeSpaces(this.email));
@@ -184,7 +186,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 email: removeSpaces(this.email),
                                 password: this.password);
                             await _firestoreService.postToken();
-                            await _decideRoute();*//*
+                            await _decideRoute();*/ /*
                           } catch (e) {
                             AlertComponent()
                                 .generateAlert(
