@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -34,10 +35,12 @@ class _LoginScreenState extends State<LoginScreen> {
   String email;
   String password;
   String displayName;
-
+  String _uid;
   bool _showSpinner = false;
+
   Auth _auth = Auth();
   FirestoreService _firestoreService = FirestoreService();
+  User _fbuser;
 
   @override
   initState() {
@@ -249,6 +252,18 @@ class _LoginScreenState extends State<LoginScreen> {
               onPressed: () async {
                 try{
                   await _auth.signInWithG();
+                  _fbuser = await _auth.getCurrentUser();
+                  _uid = _fbuser.uid;
+                  final SharedPreferences pref =
+                  await SharedPreferences.getInstance();
+
+                  await pref.setString('uid', _uid);
+                  await pref.setString('email', _fbuser.email);
+                  await pref.setString('displayName', _fbuser.displayName);
+
+                  await _firestoreService.postToken();
+
+                  Navigator.pushReplacementNamed(context, MainScreen.id);
                 }
                 catch (e) {
                   AlertComponent()
