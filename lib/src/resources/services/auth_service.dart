@@ -1,9 +1,11 @@
 import 'package:connectivity/connectivity.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 //import 'package:the_chat_app/src/resources/services/firestore_service.dart';
 
 class Auth {
   final _auth = FirebaseAuth.instance;
+  final _gSignIn = GoogleSignIn();
 
   Future<User> getCurrentUser() async => await _auth.currentUser;
 
@@ -41,6 +43,34 @@ class Auth {
       throw 'User already exists';
     }
   }
+
+  Future<void> signInWithG() async {
+    await checkInternConnection();
+    try {
+      GoogleSignInAccount googleSignInAccount = await _gSignIn.signIn();
+
+      if (googleSignInAccount != null) {
+        GoogleSignInAuthentication googleSignInAuthentication =
+        await googleSignInAccount.authentication;
+
+        AuthCredential credential = GoogleAuthProvider.credential(
+            idToken: googleSignInAuthentication.idToken,
+            accessToken: googleSignInAuthentication.accessToken);
+
+        // changed from AuthResult
+        UserCredential authResult =
+        await _auth.signInWithCredential(credential);
+        // changes from FirebaseUser
+        User user = await _auth.currentUser;
+      }
+    } catch (e) {
+      print(e.toString());
+      throw(e);
+    }
+
+  }
+
+
 
 /*Future<void> updateUserInfo({
     String displayName = '',

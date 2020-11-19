@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:the_chat_app/src/resources/utilities/constants.dart';
 
 /*
 * A widget housing bordered input box with text holder that moves on tap. The
@@ -21,9 +22,9 @@ class CustomTextField extends StatelessWidget {
 
   CustomTextField({
     @required this.placeholder,
-    this.cursorColor = Colors.brown,
-    this.placeholderColor = Colors.brown,
-    this.focusedOutlineBorder = Colors.brown,
+    this.cursorColor = kRedColor,
+    this.placeholderColor = kRedColor,
+    this.focusedOutlineBorder = kRedColor,
     this.onChanged,
     this.isPassword = false,
     this.keyboardType,

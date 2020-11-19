@@ -128,5 +128,5 @@ const kMessageTextFieldDecoration = InputDecoration(
   border: InputBorder.none,
 );
 
-const Color KRedColor = Color(0xffc0012a);
-const Color KOrangeColor = Color(0xffe78c70);
+const Color kRedColor = Color(0xffc0012a);
+const Color kOrangeColor = Color(0xffed5f5f);

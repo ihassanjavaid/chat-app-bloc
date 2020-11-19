@@ -9,6 +9,7 @@ import 'package:the_chat_app/src/resources/services/firestore_service.dart';
 import 'package:the_chat_app/src/ui/main_screen.dart';
 import 'package:the_chat_app/src/ui/widgets/alertComponent.dart';
 import 'package:the_chat_app/src/ui/widgets/customTextField.dart';
+import 'package:the_chat_app/src/resources/utilities/constants.dart';
 
 enum AuthMode { LOGIN, SIGNUP }
 
@@ -70,8 +71,8 @@ class _LoginScreenState extends State<LoginScreen> {
         body: SingleChildScrollView(
           child: Stack(
             children: <Widget>[
-              lowerHalf(context),
-              upperHalf(context),
+              //lowerHalf(context),
+              backgroundPage(context),
               _authMode == AuthMode.LOGIN
                   ? loginCard(context)
                   : signUpCard(context),
@@ -85,20 +86,23 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Widget pageTitle() {
     return Container(
-      margin: EdgeInsets.only(top: 50),
+      margin: EdgeInsets.only(top: 86),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.end,
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Icon(
-            FontAwesomeIcons.facebookMessenger,
+            Icons.mark_chat_unread_outlined,
             size: 50,
             color: Colors.white,
           ),
-          Text(
-            '\tThe Chat App',
-            style: TextStyle(
-                fontSize: 40, color: Colors.white, fontWeight: FontWeight.w400),
+          Padding(
+            padding: const EdgeInsets.only(bottom: 4.0),
+            child: Text(
+              '\t\tThe Chat App',
+              style: TextStyle(
+                  fontSize: 40, color: Colors.white, fontWeight: FontWeight.w400),
+            ),
           ),
         ],
       ),
@@ -113,7 +117,7 @@ class _LoginScreenState extends State<LoginScreen> {
           padding: EdgeInsets.only(left: 5, right: 5),
           child: Card(
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(4.0),
             ),
             elevation: 12,
             child: Padding(
@@ -126,7 +130,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     child: Text(
                       "Login",
                       style: TextStyle(
-                        color: Colors.black,
+                        color: kOrangeColor,
                         fontSize: 28,
                         fontWeight: FontWeight.w600,
                       ),
@@ -166,7 +170,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       FlatButton(
                         child: Text("Login"),
-                        color: Colors.brown,
+                        color: kRedColor,
                         textColor: Colors.white,
                         padding: EdgeInsets.only(
                             left: 38, right: 38, top: 15, bottom: 15),
@@ -221,7 +225,7 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
             Text(
               "Don't have an account ?",
-              style: TextStyle(color: Colors.grey),
+              style: TextStyle(color: Colors.white),
             ),
             FlatButton(
               onPressed: () {
@@ -229,19 +233,44 @@ class _LoginScreenState extends State<LoginScreen> {
                   _authMode = AuthMode.SIGNUP;
                 });
               },
-              textColor: Colors.black87,
-              child: Text("Create Account"),
+              textColor: Colors.white,
+              child: Text("Create Account", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
             ),
           ],
         ),
         Padding(
-          padding: const EdgeInsets.fromLTRB(15, 10, 15, 0),
+          padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
           child: SizedBox(
-            height: 50,
+            height: 60,
             width: double.maxFinite,
             child: SignInButton(
-              Buttons.Facebook,
-              text: 'Sign in with Facebook',
+              Buttons.Google,
+              text: 'Sign in using Google',
+              onPressed: () async {
+                try{
+                  await _auth.signInWithG();
+                }
+                catch (e) {
+                  AlertComponent()
+                      .generateAlert(
+                      context: context,
+                      title: "Invalid Credentials",
+                      description: e.toString())
+                      .show();
+                  print(e);
+                }
+              },
+            ),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
+          child: SizedBox(
+            height: 60,
+            width: double.maxFinite,
+            child: SignInButton(
+              Buttons.Apple,
+              text: 'Sign in using Apple',
               onPressed: () {
                 // TODO implement Facebook Login
               },
@@ -260,7 +289,7 @@ class _LoginScreenState extends State<LoginScreen> {
           padding: EdgeInsets.only(left: 10, right: 10),
           child: Card(
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
+              borderRadius: BorderRadius.circular(4.0),
             ),
             elevation: 12,
             child: Padding(
@@ -273,7 +302,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     child: Text(
                       "Create Account",
                       style: TextStyle(
-                        color: Colors.black,
+                        color: kOrangeColor,
                         fontSize: 28,
                         fontWeight: FontWeight.w600,
                       ),
@@ -327,7 +356,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         padding: const EdgeInsets.fromLTRB(0, 12, 0, 0),
                         child: FlatButton(
                           child: Text("Sign Up"),
-                          color: Colors.brown,
+                          color: kOrangeColor,
                           textColor: Colors.white,
                           padding: EdgeInsets.only(
                               left: 38, right: 38, top: 15, bottom: 15),
@@ -381,7 +410,7 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
             Text(
               "Already have an account?",
-              style: TextStyle(color: Colors.grey),
+              style: TextStyle(color: Colors.white),
             ),
             FlatButton(
               onPressed: () {
@@ -389,8 +418,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   _authMode = AuthMode.LOGIN;
                 });
               },
-              textColor: Colors.black87,
-              child: Text("Login"),
+              textColor: Colors.white,
+              child: Text("Login", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),),
             )
           ],
         ),
@@ -400,7 +429,7 @@ class _LoginScreenState extends State<LoginScreen> {
             child: Text(
               "Terms & Conditions",
               style: TextStyle(
-                color: Colors.grey,
+                color: Colors.white,
               ),
             ),
             onPressed: () {},
@@ -410,17 +439,23 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  Widget upperHalf(BuildContext context) {
+  Widget backgroundPage(BuildContext context) {
     return Container(
-      height: screenHeight / 2,
-      child: Image.asset(
-        '',
-        fit: BoxFit.cover,
+      height: screenHeight,
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [
+            kRedColor,
+            kOrangeColor
+          ],
+          begin: Alignment.bottomCenter,
+          end: Alignment.topCenter
+        )
       ),
     );
   }
 
-  Widget lowerHalf(BuildContext context) {
+  /*Widget lowerHalf(BuildContext context) {
     return Align(
       alignment: Alignment.bottomCenter,
       child: Container(
@@ -428,5 +463,5 @@ class _LoginScreenState extends State<LoginScreen> {
         color: Color(0xFFECF0F3),
       ),
     );
-  }
+  }*/
 }
