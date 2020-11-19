@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:apple_sign_in/apple_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -45,23 +48,18 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   initState() {
     super.initState();
-    //getDeviceToken();
+    getDeviceToken();
+    if (Platform.isIOS) {
+      //check for ios if developing for both android & ios
+      AppleSignIn.onCredentialRevoked.listen((_) {
+        print("Credentials revoked");
+      });
+    }
   }
 
-  /*void getDeviceToken() async {
+  void getDeviceToken() async {
     final token = await _firestoreService.getDeviceToken();
     print(token);
-  }*/
-
-  Future<void> _decideRoute() async {
-    /*final currentUser = await _auth.getCurrentUser();
-    final currentUserData =
-    await _firestoreService.getUserData(currentUser.email);
-
-    if (currentUserData.isAdmin)
-      Navigator.pushReplacementNamed(context, Index.id);
-    else
-      Navigator.pushReplacementNamed(context, UserMessages.id);*/
   }
 
   @override
@@ -104,7 +102,9 @@ class _LoginScreenState extends State<LoginScreen> {
             child: Text(
               '\t\tThe Chat App',
               style: TextStyle(
-                  fontSize: 40, color: Colors.white, fontWeight: FontWeight.w400),
+                  fontSize: 40,
+                  color: Colors.white,
+                  fontWeight: FontWeight.w400),
             ),
           ),
         ],
@@ -187,8 +187,8 @@ class _LoginScreenState extends State<LoginScreen> {
                           });
                           try {
                             // store email in shared prefs
-                             final SharedPreferences pref =
-                            await SharedPreferences.getInstance();
+                            final SharedPreferences pref =
+                                await SharedPreferences.getInstance();
                             await pref.setString(
                                 'email', removeSpaces(this.email));
                             // login
@@ -197,7 +197,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                 password: this.password);
                             await _firestoreService.postToken();
                             //await _decideRoute();
-                            Navigator.pushReplacementNamed(context, MainScreen.id);
+                            Navigator.pushReplacementNamed(
+                                context, MainScreen.id);
                           } catch (e) {
                             AlertComponent()
                                 .generateAlert(
@@ -237,7 +238,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 });
               },
               textColor: Colors.white,
-              child: Text("Create Account", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+              child: Text("Create Account",
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
             ),
           ],
         ),
@@ -250,12 +252,12 @@ class _LoginScreenState extends State<LoginScreen> {
               Buttons.Google,
               text: 'Sign in using Google',
               onPressed: () async {
-                try{
+                try {
                   await _auth.signInWithG();
                   _fbuser = await _auth.getCurrentUser();
                   _uid = _fbuser.uid;
                   final SharedPreferences pref =
-                  await SharedPreferences.getInstance();
+                      await SharedPreferences.getInstance();
 
                   await pref.setString('uid', _uid);
                   await pref.setString('email', _fbuser.email);
@@ -264,13 +266,12 @@ class _LoginScreenState extends State<LoginScreen> {
                   await _firestoreService.postToken();
 
                   Navigator.pushReplacementNamed(context, MainScreen.id);
-                }
-                catch (e) {
+                } catch (e) {
                   AlertComponent()
                       .generateAlert(
-                      context: context,
-                      title: "Invalid Credentials",
-                      description: e.toString())
+                          context: context,
+                          title: "Invalid Credentials",
+                          description: e.toString())
                       .show();
                   print(e);
                 }
@@ -286,8 +287,46 @@ class _LoginScreenState extends State<LoginScreen> {
             child: SignInButton(
               Buttons.Apple,
               text: 'Sign in using Apple',
-              onPressed: () {
-                // TODO implement Facebook Login
+              onPressed: () async {
+                if (await AppleSignIn.isAvailable()) {
+                  final AuthorizationResult result = await
+                  AppleSignIn.performRequests([
+                    AppleIdRequest(requestedScopes: [Scope.email, Scope.fullName])
+                  ]);
+                  switch (result.status) {
+
+                    case AuthorizationStatus.authorized:
+                      print(result.credential.user);
+                      await _firestoreService.postToken();
+                      await _firestoreService.registerUser(
+                          email: result.credential.email,
+                          displayName: result.credential.fullName.toString());
+                      Navigator.pushReplacementNamed(context, MainScreen.id);
+                      break;
+
+                    case AuthorizationStatus.error:
+                      AlertComponent()
+                          .generateAlert(
+                          context: context,
+                          title: "Error",
+                          description: 'Apple Sign-In Error')
+                          .show();
+                      break;
+
+                    case AuthorizationStatus.cancelled:
+                      print('User cancelled');
+                      break;
+
+                  }
+                } else {
+                  AlertComponent()
+                      .generateAlert(
+                          context: context,
+                          title: "Error",
+                          description:
+                              'Apple Sign-In not supported on this device!')
+                      .show();
+                }
               },
             ),
           ),
@@ -383,9 +422,9 @@ class _LoginScreenState extends State<LoginScreen> {
                             });
                             try {
                               //final fixedEmail = removeSpaces(this.email);
-                              /*await _auth.registerUser(
+                              await _auth.registerUser(
                                   email: removeSpaces(this.email),
-                                  password: this.password);*/
+                                  password: this.password);
                               /*await _auth.updateUserInfo(
                                   displayName: this.displayName);*/
                               await _firestoreService.registerUser(
@@ -434,7 +473,10 @@ class _LoginScreenState extends State<LoginScreen> {
                 });
               },
               textColor: Colors.white,
-              child: Text("Login", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),),
+              child: Text(
+                "Login",
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+              ),
             )
           ],
         ),
@@ -458,15 +500,10 @@ class _LoginScreenState extends State<LoginScreen> {
     return Container(
       height: screenHeight,
       decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [
-            kRedColor,
-            kOrangeColor
-          ],
-          begin: Alignment.bottomCenter,
-          end: Alignment.topCenter
-        )
-      ),
+          gradient: LinearGradient(
+              colors: [kRedColor, kOrangeColor],
+              begin: Alignment.bottomCenter,
+              end: Alignment.topCenter)),
     );
   }
 
