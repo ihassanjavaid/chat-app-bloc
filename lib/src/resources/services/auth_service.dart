@@ -1,13 +1,19 @@
-/*
-
-
+import 'package:connectivity/connectivity.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:the_chat_app/src/resources/services/firestore_service.dart';
+//import 'package:the_chat_app/src/resources/services/firestore_service.dart';
 
 class Auth {
   final _auth = FirebaseAuth.instance;
 
   Future<User> getCurrentUser() async => await _auth.currentUser;
+
+  Future<void> checkInternConnection() async {
+    final ConnectivityResult connectivityStatus =
+    await (Connectivity().checkConnectivity());
+
+    if (connectivityStatus == ConnectivityResult.none)
+      throw 'No internet connection';
+  }
 
   Future<void> signOut() async {
     await _auth.signOut();
@@ -36,7 +42,6 @@ class Auth {
     }
   }
 
-  */
 /*Future<void> updateUserInfo({
     String displayName = '',
     String photoURL = '',
@@ -54,7 +59,6 @@ class Auth {
       print(e);
       throw e;
     }
-  }*//*
+  }*/
 
 }
-*/

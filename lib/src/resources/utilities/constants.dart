@@ -128,9 +128,5 @@ const kMessageTextFieldDecoration = InputDecoration(
   border: InputBorder.none,
 );
 
-const Color primary = Colors.deepPurple;
-const Color grey = Color(0xFFe9eaec);
-const Color white = Color(0xFFFFFFFF);
-const Color black = Color(0xFF000000);
-const Color online = Color(0xFF66BB6A);
-const Color blue_story = Colors.blueAccent;
+const Color KRedColor = Color(0xffc0012a);
+const Color KOrangeColor = Color(0xffe78c70);

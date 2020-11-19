@@ -3,6 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:the_chat_app/src/resources/services/auth_service.dart';
+import 'package:the_chat_app/src/resources/services/firestore_service.dart';
+import 'package:the_chat_app/src/ui/main_screen.dart';
 import 'package:the_chat_app/src/ui/widgets/alertComponent.dart';
 import 'package:the_chat_app/src/ui/widgets/customTextField.dart';
 
@@ -31,8 +35,8 @@ class _LoginScreenState extends State<LoginScreen> {
   String displayName;
 
   bool _showSpinner = false;
-  /*Auth _auth = Auth();
-  FirestoreService _firestoreService = FirestoreService();*/
+  Auth _auth = Auth();
+  FirestoreService _firestoreService = FirestoreService();
 
   @override
   initState() {
@@ -153,17 +157,14 @@ class _LoginScreenState extends State<LoginScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: <Widget>[
-                      MaterialButton(
+                      /*MaterialButton(
                         onPressed: () {},
                         child: Text("Forgot Password ?"),
-                      ),
+                      ),*/
                       Expanded(
                         child: Container(),
                       ),
                       FlatButton(
-                        onPressed: () {
-                          // TODO Add functionality
-                        },
                         child: Text("Login"),
                         color: Colors.brown,
                         textColor: Colors.white,
@@ -171,22 +172,25 @@ class _LoginScreenState extends State<LoginScreen> {
                             left: 38, right: 38, top: 15, bottom: 15),
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(5)),
-                        /*onPressed: () async {
-                          Navigator.pushReplacementNamed(
-                              context, MainScreen.id);
+                        onPressed: () async {
+                          /*Navigator.pushReplacementNamed(
+                              context, MainScreen.id);*/
                           setState(() {
                             _showSpinner = true;
                           });
                           try {
-                            */ /*final SharedPreferences pref =
+                            // store email in shared prefs
+                             final SharedPreferences pref =
                             await SharedPreferences.getInstance();
                             await pref.setString(
                                 'email', removeSpaces(this.email));
+                            // login
                             await _auth.loginUserWithEmailAndPassword(
                                 email: removeSpaces(this.email),
                                 password: this.password);
                             await _firestoreService.postToken();
-                            await _decideRoute();*/ /*
+                            //await _decideRoute();
+                            Navigator.pushReplacementNamed(context, MainScreen.id);
                           } catch (e) {
                             AlertComponent()
                                 .generateAlert(
@@ -199,7 +203,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           setState(() {
                             _showSpinner = false;
                           });
-                        },*/
+                        },
                       )
                     ],
                   ),
@@ -334,18 +338,18 @@ class _LoginScreenState extends State<LoginScreen> {
                               _showSpinner = true;
                             });
                             try {
-                              /*final fixedEmail = removeSpaces(this.email);
-                              await _auth.registerUser(
+                              //final fixedEmail = removeSpaces(this.email);
+                              /*await _auth.registerUser(
                                   email: removeSpaces(this.email),
-                                  password: this.password);
-                              await _auth.updateUserInfo(
-                                  displayName: this.displayName);
+                                  password: this.password);*/
+                              /*await _auth.updateUserInfo(
+                                  displayName: this.displayName);*/
                               await _firestoreService.registerUser(
                                   email: removeSpaces(this.email),
                                   displayName: this.displayName);
-                              await _firestoreService.postToken();*/
-                              /*Navigator.pushReplacementNamed(
-                                  context, UserMessages.id);*/
+                              await _firestoreService.postToken();
+                              Navigator.pushReplacementNamed(
+                                  context, MainScreen.id);
                             } catch (e) {
                               AlertComponent()
                                   .generateAlert(
