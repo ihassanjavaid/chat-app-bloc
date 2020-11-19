@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:the_chat_app/src/ui/chat_screen.dart';
 import 'package:the_chat_app/src/ui/login_screen.dart';
+import 'package:the_chat_app/src/ui/main_screen.dart';
 import 'package:the_chat_app/src/ui/test.dart';
 
 void main() async {
@@ -16,11 +17,10 @@ class ChatApp extends StatelessWidget {
     return MaterialApp(
       title: 'The Chat App',
       debugShowCheckedModeBanner: false,
-      initialRoute: Demo.id,
+      initialRoute: MainScreen.id,
       routes: {
         LoginScreen.id: (context) => LoginScreen(),
-        ChatScreen.id: (context) => ChatScreen(),
-        Demo.id: (context) => Demo(),
+        MainScreen.id: (context) => MainScreen(),
       },
     );
   }

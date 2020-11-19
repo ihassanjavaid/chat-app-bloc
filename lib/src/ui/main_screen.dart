@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
-class Demo extends StatefulWidget {
-  static const String id = 'demo_page';
+class MainScreen extends StatefulWidget {
+  static const String id = 'main_screen';
   @override
-  _DemoState createState() => _DemoState();
+  _MainScreenState createState() => _MainScreenState();
 }
 
-class _DemoState extends State<Demo> {
+class _MainScreenState extends State<MainScreen> {
   bool firstLaunch = true;
   double height = 1;
   double width = 1;
