@@ -22,6 +22,9 @@ class MainScreen extends StatelessWidget {
               size = ContainerSize(
                 height: MediaQuery.of(context).size.height * 0.84,
                 width: MediaQuery.of(context).size.width,
+                screenMaxHeight: MediaQuery.of(context).size.height,
+                screenMaxWidth: MediaQuery.of(context).size.width,
+                maxHeightConstraint: 0.84,
               );
             } else {
               size = snapshot.data;
@@ -58,16 +61,9 @@ class MainScreen extends StatelessWidget {
                 ),
                 GestureDetector(
                   onVerticalDragUpdate: (drag) {
-                    // Going down
-                    if (drag.delta.direction > 0) {
-                      if (size.height > 100)
-                        size.updateHeight(-drag.primaryDelta);
-                    } else if (drag.delta.direction < 0) {
-                      // Going up
-                      if (size.height < topGap)
-                        size.updateHeight(-drag.primaryDelta);
-                    }
-
+                    // Update the size delta y property
+                    size.setDy = drag.primaryDelta;
+                    // Throw the new size onto the stream
                     chatBloc.addSize(size);
                   },
                   child: Align(
