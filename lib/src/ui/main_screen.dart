@@ -13,7 +13,7 @@ class MainScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.blueGrey,
       body: SafeArea(
-        child: StreamBuilder(
+        child: StreamBuilder<ContainerSize>(
           stream: chatBloc.size,
           builder: (context, snapshot) {
             ContainerSize size;

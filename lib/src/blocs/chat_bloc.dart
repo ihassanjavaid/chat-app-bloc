@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:the_chat_app/src/models/size.dart';
 
 class ChatBloc {
-  final _resizeController = StreamController();
+  final _resizeController = StreamController<ContainerSize>();
 
   // Add data
   Function(ContainerSize) get addSize => _resizeController.sink.add;
