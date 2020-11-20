@@ -46,10 +46,8 @@ class ContainerSize {
   /// for the [GestureDetector].
   ///
   void updateHeight(Direction direction) {
-    print(_dy);
     switch (direction) {
       case Direction.Down:
-        print('Going down...');
         if (_height + _dy < 100)
           _height = 100;
         else
@@ -57,9 +55,8 @@ class ContainerSize {
         break;
 
       case Direction.Up:
-        print('Going up...');
-        if ((_height + _dy) > (maxHeightConstraint * _screenMaxHeight))
-          _height = (maxHeightConstraint - 1) * _screenMaxHeight;
+        if ((_height + _dy) > maxHeightConstraint)
+          _height = maxHeightConstraint;
         else
           _height += _dy;
         break;
