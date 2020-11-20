@@ -7,9 +7,6 @@ class MainScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double threshold = MediaQuery.of(context).size.height * 0.18;
-    double topGap = MediaQuery.of(context).size.height * 0.85;
-
     return Scaffold(
       backgroundColor: Colors.blueGrey,
       body: SafeArea(
@@ -24,7 +21,7 @@ class MainScreen extends StatelessWidget {
                 width: MediaQuery.of(context).size.width,
                 screenMaxHeight: MediaQuery.of(context).size.height,
                 screenMaxWidth: MediaQuery.of(context).size.width,
-                maxHeightConstraint: 0.84,
+                maxHeightConstraint: 0.85,
               );
             } else {
               size = snapshot.data;
@@ -41,8 +38,10 @@ class MainScreen extends StatelessWidget {
                         horizontal: 12.0,
                       ),
                       child: AnimatedAlign(
-                        duration: Duration(milliseconds: 750),
-                        alignment: constraints.biggest.height >= threshold
+                        duration:
+                            Duration(milliseconds: size.dy < 0 ? 750 : 100),
+                        alignment: constraints.biggest.height >=
+                                MediaQuery.of(context).size.height * 0.18
                             ? Alignment.center
                             : Alignment.centerLeft,
                         child: Text(

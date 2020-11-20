@@ -27,7 +27,7 @@ class ContainerSize {
         _dy = dy,
         _screenMaxHeight = screenMaxHeight,
         _screenMaxWidth = screenMaxWidth,
-        _maxHeightConstraint = maxHeightConstraint * screenMaxWidth,
+        _maxHeightConstraint = maxHeightConstraint * screenMaxHeight,
         assert(maxHeightConstraint >= 0 && maxHeightConstraint <= 1);
 
   double get width => _width;
@@ -46,6 +46,7 @@ class ContainerSize {
   /// for the [GestureDetector].
   ///
   void updateHeight(Direction direction) {
+    print(_dy);
     switch (direction) {
       case Direction.Down:
         print('Going down...');
@@ -57,13 +58,12 @@ class ContainerSize {
 
       case Direction.Up:
         print('Going up...');
-        if (_height + _dy > maxHeightConstraint)
-          _height = maxHeightConstraint;
+        if ((_height + _dy) > (maxHeightConstraint * _screenMaxHeight))
+          _height = (maxHeightConstraint - 1) * _screenMaxHeight;
         else
           _height += _dy;
         break;
       default:
     }
-    direction == Direction.Down ? _height += -_dy : _height += _dy;
   }
 }
