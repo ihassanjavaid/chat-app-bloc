@@ -180,9 +180,9 @@ class _LoginScreenState extends State<LoginScreen> {
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(5)),
                         onPressed: () async {
-                          /*Navigator.pushReplacementNamed(
-                              context, MainScreen.id);*/
-                          setState(() {
+                          Navigator.pushReplacementNamed(
+                              context, MainScreen.id);
+                          /* setState(() {
                             _showSpinner = true;
                           });
                           try {
@@ -210,7 +210,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           }
                           setState(() {
                             _showSpinner = false;
-                          });
+                          }); */
                         },
                       )
                     ],
@@ -289,12 +289,12 @@ class _LoginScreenState extends State<LoginScreen> {
               text: 'Sign in using Apple',
               onPressed: () async {
                 if (await AppleSignIn.isAvailable()) {
-                  final AuthorizationResult result = await
-                  AppleSignIn.performRequests([
-                    AppleIdRequest(requestedScopes: [Scope.email, Scope.fullName])
+                  final AuthorizationResult result =
+                      await AppleSignIn.performRequests([
+                    AppleIdRequest(
+                        requestedScopes: [Scope.email, Scope.fullName])
                   ]);
                   switch (result.status) {
-
                     case AuthorizationStatus.authorized:
                       print(result.credential.user);
                       await _firestoreService.postToken();
@@ -307,16 +307,15 @@ class _LoginScreenState extends State<LoginScreen> {
                     case AuthorizationStatus.error:
                       AlertComponent()
                           .generateAlert(
-                          context: context,
-                          title: "Error",
-                          description: 'Apple Sign-In Error')
+                              context: context,
+                              title: "Error",
+                              description: 'Apple Sign-In Error')
                           .show();
                       break;
 
                     case AuthorizationStatus.cancelled:
                       print('User cancelled');
                       break;
-
                   }
                 } else {
                   AlertComponent()
