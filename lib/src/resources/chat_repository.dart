@@ -31,6 +31,7 @@ class ChatRepositoryMemory extends ChatRepository {
     if (FirebaseFirestore.instance != null) {
       FirebaseFirestore.instance
           .collection('messages')
+          .orderBy('timestamp')
           .snapshots()
           .listen((messages) {
         _messages.clear();

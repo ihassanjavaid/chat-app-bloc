@@ -192,23 +192,21 @@ class ChatContainer extends StatelessWidget {
                 //return Text(chatMessage.message);
                 double bubbleSpace = MediaQuery.of(context).size.width / 2.1;
                 return Column(
-                  crossAxisAlignment: chatMessage.sender == 'ME'
+                  crossAxisAlignment: chatMessage.isMe
                       ? CrossAxisAlignment.end
                       : CrossAxisAlignment.start,
                   children: [
                     Bubble(
-                      margin: chatMessage.sender == 'ME'
+                      margin: chatMessage.isMe
                           ? BubbleEdges.only(
                               top: 10, right: 5, left: bubbleSpace)
                           : BubbleEdges.only(
                               top: 10, right: bubbleSpace, left: 5),
-                      nip: chatMessage.sender == 'ME'
+                      nip: chatMessage.isMe
                           ? BubbleNip.rightBottom
                           : BubbleNip.leftBottom,
                       elevation: 1,
-                      color: chatMessage.sender == 'ME'
-                          ? kOrangeColor
-                          : kLightGreyColor,
+                      color: chatMessage.isMe ? kOrangeColor : kLightGreyColor,
                       child: Text(
                         chatMessage.message,
                         style: TextStyle(fontFamily: 'CM Sans Serif'),

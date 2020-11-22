@@ -21,7 +21,7 @@ class ChatApp extends StatelessWidget {
       child: MaterialApp(
         title: 'The Chat App',
         debugShowCheckedModeBanner: false,
-        initialRoute: MainScreen.id,
+        initialRoute: LoginScreen.id,
         routes: {
           LoginScreen.id: (_) => LoginScreen(),
           MainScreen.id: (_) => MainScreen(),

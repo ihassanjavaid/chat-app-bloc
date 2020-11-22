@@ -33,17 +33,20 @@ class FirestoreService {
 
   Future<ChatUser> getUserData() async {
     ChatUser chatUser;
-    final email = Auth().getCurrentUser();
+    final email = Auth().getCurrentUser().email;
 
     await checkInternConnection();
+    try {
+      final userDocuments = await _firestore
+          .collection('users')
+          .where('email', isEqualTo: email)
+          .get();
 
-    final userDocuments = await _firestore
-        .collection('users')
-        .where('email', isEqualTo: email)
-        .get();
-
-    for (var userDocument in userDocuments.docs) {
-      chatUser = ChatUser.fromMap(userDocument.data());
+      for (var userDocument in userDocuments.docs) {
+        chatUser = ChatUser.fromMap(userDocument.data());
+      }
+    } catch (err) {
+      print(err);
     }
 
     return chatUser;
@@ -54,11 +57,9 @@ class FirestoreService {
 
     await checkInternConnection();
 
-    final userDocuments = await _firestore
-        .collection('users')
-        .get();
-    
-    for (var userName in userDocuments.docs){
+    final userDocuments = await _firestore.collection('users').get();
+
+    for (var userName in userDocuments.docs) {
       usersList = usersList + ', ${userName.get('firstName')}';
     }
 
