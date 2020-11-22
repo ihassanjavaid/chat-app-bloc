@@ -24,3 +24,5 @@ class ChatMoving extends ChatState {
 }
 
 class ChatMoved extends ChatState {}
+
+class ChatCollapsed extends ChatState {}

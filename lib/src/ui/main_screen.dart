@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:the_chat_app/src/blocs/chat_bloc/chat_bloc.dart';
 import 'package:the_chat_app/src/models/chat_size.dart';
-
+import 'package:the_chat_app/src/resources/utilities/constants.dart';
+import 'package:the_chat_app/src/ui/widgets/chat_container.dart';
 
 class MainScreen extends StatelessWidget {
   static const String id = 'main_screen';
@@ -37,7 +38,12 @@ class MainScreen extends StatelessWidget {
         getTextContainer(context),
         SizedBox(height: 12.0),
         // Chat container
-        getChatContainer(context),
+        // getChatContainer(context),
+        Expanded(
+          child: SingleChildScrollView(
+            child: ChatContainer(),
+          ),
+        ),
       ],
     );
   }
@@ -60,10 +66,9 @@ class MainScreen extends StatelessWidget {
             child: Text(
               'Cabinet',
               style: TextStyle(
-                color: Colors.white,
-                fontSize: 24.0,
-                fontWeight: FontWeight.bold
-              ),
+                  color: Colors.white,
+                  fontSize: 24.0,
+                  fontWeight: FontWeight.bold),
             ),
           ),
         ),
@@ -112,21 +117,6 @@ class MainScreen extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  /*Container(
-                    height: 10,
-                    width: double.maxFinite,
-                    child: Padding(
-                      padding: const EdgeInsets.only(
-                        top: 18.0,
-                        left: 120,
-                        right: 120,
-                      ),
-                      child: Divider(
-                        color: Colors.black54,
-                        thickness: 5,
-                      ),
-                    ),
-                  ),*/
                   Container(
                     height: 15,
                     color: Colors.grey.withOpacity(0.2),
@@ -147,14 +137,14 @@ class MainScreen extends StatelessWidget {
                     child: AppBar(
                       backgroundColor: Colors.grey.withOpacity(0.2),
                       elevation: 0,
-                      leading: FlatButton(
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                          child: Icon(
-                            Icons.arrow_back_ios,
-                            color: kRedColor,
-                          )),
+                      // leading: FlatButton(
+                      //     onPressed: () {
+                      //       Navigator.pop(context);
+                      //     },
+                      //     child: Icon(
+                      //       Icons.arrow_back_ios,
+                      //       color: kRedColor,
+                      //     )),
                       title: Row(
                         children: <Widget>[
                           Container(
@@ -186,7 +176,8 @@ class MainScreen extends StatelessWidget {
                               Text(
                                 'Talha, Ali, Osama',
                                 style: TextStyle(
-                                    color: Colors.black.withOpacity(0.4), fontSize: 14),
+                                    color: Colors.black.withOpacity(0.4),
+                                    fontSize: 14),
                               )
                             ],
                           )
@@ -206,17 +197,17 @@ class MainScreen extends StatelessWidget {
                           color: kRedColor,
                           size: 35,
                         ),
-                        SizedBox(
-                          width: 8,
-                        ),
-                        Container(
-                          width: 13,
-                          height: 13,
-                          decoration: BoxDecoration(
-                              color: Colors.green,
-                              shape: BoxShape.circle,
-                              border: Border.all(color: Colors.white38)),
-                        ),
+                        // SizedBox(
+                        //   width: 8,
+                        // ),
+                        // Container(
+                        //   width: 13,
+                        //   height: 13,
+                        //   decoration: BoxDecoration(
+                        //       color: Colors.green,
+                        //       shape: BoxShape.circle,
+                        //       border: Border.all(color: Colors.white38)),
+                        // ),
                         SizedBox(
                           width: 15,
                         ),
@@ -229,7 +220,8 @@ class MainScreen extends StatelessWidget {
                   Container(
                     height: 60,
                     width: double.infinity,
-                    decoration: BoxDecoration(color: Colors.grey.withOpacity(0.4)),
+                    decoration:
+                        BoxDecoration(color: Colors.grey.withOpacity(0.4)),
                     child: Padding(
                       padding: EdgeInsets.only(left: 15, right: 15, bottom: 10),
                       child: Row(
@@ -261,32 +253,24 @@ class MainScreen extends StatelessWidget {
                                   size: 30,
                                   color: kRedColor,
                                 ),
-                                /*SizedBox(
-                                width: 15,
-                              ),*/
-                                /*Icon(
-                                Icons.keyboard_voice,
-                                size: 30,
-                                color: kRedColor,
-                              ),*/
                               ],
                             ),
                           ),
                           Expanded(
                             flex: 4,
-                            //width: (MediaQuery.of(context).size.width - 40) / 2,
                             child: Row(
                               children: <Widget>[
                                 Padding(
                                   padding: const EdgeInsets.only(top: 2.0),
                                   child: Container(
-                                    width:
-                                    (MediaQuery.of(context).size.width - 10) /
+                                    width: (MediaQuery.of(context).size.width -
+                                            10) /
                                         2,
                                     height: 40,
                                     decoration: BoxDecoration(
                                         color: Colors.grey,
-                                        borderRadius: BorderRadius.circular(20)),
+                                        borderRadius:
+                                            BorderRadius.circular(20)),
                                     child: Padding(
                                       padding: const EdgeInsets.only(left: 12),
                                       child: TextField(
@@ -328,92 +312,3 @@ class MainScreen extends StatelessWidget {
     );
   }
 }
-
-/* class _MainScreenState extends State<MainScreen> {
-  bool firstLaunch = true;
-  double height = 1;
-  double width = 1;
-  double topGap;
-
-  double getHeight(int containerNumber) {
-    if (firstLaunch) {
-      height = MediaQuery.of(context).size.height * 0.84;
-    }
-
-    firstLaunch = false;
-    return height;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    width = MediaQuery.of(context).size.width;
-    double threshold = MediaQuery.of(context).size.height * 0.18;
-    topGap = MediaQuery.of(context).size.height * 0.85;
-    return Scaffold(
-      backgroundColor: kRedColorGrey,
-      body: SafeArea(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-              child: LayoutBuilder(
-                builder: (context, constraints) => Container(
-                  constraints: constraints,
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 12.0,
-                  ),
-                  child: AnimatedAlign(
-                    duration: Duration(milliseconds: 750),
-                    alignment: constraints.biggest.height >= threshold
-                        ? Alignment.center
-                        : Alignment.centerLeft,
-                    child: Text(
-                      'Cabinet',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 22.0,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            SizedBox(
-              height: 12.0,
-            ),
-            GestureDetector(
-              onVerticalDragUpdate: (drag) {
-                print(drag.kRedColorDelta);
-                setState(() {
-                  if (drag.delta.direction > 0) {
-                    // Going down
-                    if (height > 100) height -= drag.kRedColorDelta;
-                  } else if (drag.delta.direction < 0) {
-                    // Going up
-                    if (height < topGap) height += -drag.kRedColorDelta;
-                  }
-                });
-              },
-              child: Align(
-                alignment: Alignment.bottomCenter,
-                child: AnimatedContainer(
-                  duration: Duration(milliseconds: 150),
-                  height: getHeight(2),
-                  width: this.width,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(24.0),
-                      topRight: Radius.circular(24.0),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-} */

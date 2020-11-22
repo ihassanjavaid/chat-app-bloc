@@ -24,9 +24,13 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       // Pass on the event data to the repository for processing
       _sizeRepository.updateSize(size);
 
-      // Throw the updated size unto the stream
-      yield ChatMoving(size);
-      yield ChatMoved();
+      if (size.height > 100) {
+        // Throw the updated size unto the stream
+        yield ChatMoving(size);
+        yield ChatMoved();
+      } else {
+        yield ChatCollapsed();
+      }
     }
   }
 }

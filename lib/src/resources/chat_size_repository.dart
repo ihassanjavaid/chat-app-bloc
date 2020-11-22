@@ -7,11 +7,12 @@ abstract class ChatSizeRepository {
 class UpdateChatSize extends ChatSizeRepository {
   @override
   ChatSize updateSize(ChatSize size) {
+    final double kChatMinHeight = 100;
     if (size.dy < 0) {
       // Going down
-      if (size.height > 100) {
-        if (size.height + size.dy < 100)
-          size.setHeight = 100;
+      if (size.height > kChatMinHeight) {
+        if (size.height + size.dy < kChatMinHeight)
+          size.setHeight = kChatMinHeight;
         else
           size.setHeight = size.height + size.dy;
       }
