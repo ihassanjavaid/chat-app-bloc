@@ -69,8 +69,14 @@ class ChatContainer extends StatelessWidget {
     return Column(
       children: [
         Container(
-          height: 15,
-          color: Colors.grey.withOpacity(0.2),
+          height: 15.5,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(24),
+              topRight: Radius.circular(24.0),
+            ),
+            color: kLightGreyColor
+          ),
           child: Padding(
             padding: const EdgeInsets.only(
               top: 12.0,
@@ -86,7 +92,7 @@ class ChatContainer extends StatelessWidget {
         PreferredSize(
           preferredSize: Size.fromHeight(20),
           child: AppBar(
-            backgroundColor: Colors.grey.withOpacity(0.2),
+            backgroundColor: kLightGreyColor,
             elevation: 0,
             leading: collapsed
                 ? Container()
@@ -169,51 +175,55 @@ class ChatContainer extends StatelessWidget {
     return Container(
       height: 60,
       width: double.infinity,
-      decoration: BoxDecoration(color: Colors.grey.withOpacity(0.4)),
+      decoration: BoxDecoration(color: kLightGreyColor),
       child: Padding(
         padding: EdgeInsets.only(left: 15, right: 15, bottom: 10),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             Expanded(
-              flex: 2,
+              flex: 1,
               child: Row(
                 children: <Widget>[
-                  Icon(
-                    Icons.add_circle,
-                    size: 30,
-                    color: kRedColor,
+                  SizedBox(
+                    width: 4.0,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 5.0),
+                    child: Icon(
+                      Icons.camera_alt,
+                      size: 30,
+                      color: kRedColor,
+                    ),
                   ),
                   SizedBox(
-                    width: 10,
+                    width: 12.0,
                   ),
-                  Icon(
-                    Icons.camera_alt,
-                    size: 30,
-                    color: kRedColor,
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Icon(
-                    Icons.photo,
-                    size: 30,
-                    color: kRedColor,
+                  Padding(
+                    padding: const EdgeInsets.only(top: 5.0),
+                    child: Icon(
+                      Icons.photo,
+                      size: 30,
+                      color: kRedColor,
+                    ),
                   ),
                 ],
               ),
             ),
+            SizedBox(
+              width: 4.0,
+            ),
             Expanded(
-              flex: 4,
+              flex: 3,
               child: Row(
                 children: <Widget>[
                   Padding(
-                    padding: const EdgeInsets.only(top: 2.0),
+                    padding: const EdgeInsets.only(top: 4.0),
                     child: Container(
-                      width: (MediaQuery.of(context).size.width - 10) / 2,
-                      height: 40,
+                      width: (MediaQuery.of(context).size.width)/1.8,
+                      height: 38,
                       decoration: BoxDecoration(
-                          color: Colors.grey,
+                          color: Colors.white.withOpacity(0.8),
                           borderRadius: BorderRadius.circular(20)),
                       child: Padding(
                         padding: const EdgeInsets.only(left: 12),
@@ -233,12 +243,15 @@ class ChatContainer extends StatelessWidget {
                     ),
                   ),
                   SizedBox(
-                    width: 20,
+                    width: 16,
                   ),
-                  Icon(
-                    Icons.thumb_up,
-                    size: 30,
-                    color: kRedColor,
+                  Padding(
+                    padding: const EdgeInsets.only(top: 4.0),
+                    child: Icon(
+                      Icons.thumb_up,
+                      size: 30,
+                      color: kRedColor,
+                    ),
                   ),
                 ],
               ),

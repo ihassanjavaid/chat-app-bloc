@@ -130,3 +130,4 @@ const kMessageTextFieldDecoration = InputDecoration(
 
 const Color kRedColor = Color(0xffc0012a);
 const Color kOrangeColor = Color(0xffed5f5f);
+const Color kLightGreyColor = Color(0xffc9c9c9);
