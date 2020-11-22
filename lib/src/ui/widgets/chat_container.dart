@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:the_chat_app/src/blocs/chat_bloc/chat_bloc.dart';
+import 'package:the_chat_app/src/blocs/message_bloc/message_bloc.dart';
+import 'package:the_chat_app/src/models/chat_model.dart';
 import 'package:the_chat_app/src/models/chat_size.dart';
 import 'package:the_chat_app/src/resources/utilities/constants.dart';
 
@@ -71,12 +73,11 @@ class ChatContainer extends StatelessWidget {
         Container(
           height: 15.5,
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(24),
-              topRight: Radius.circular(24.0),
-            ),
-            color: kLightGreyColor
-          ),
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(24),
+                topRight: Radius.circular(24.0),
+              ),
+              color: kLightGreyColor),
           child: Padding(
             padding: const EdgeInsets.only(
               top: 12.0,
@@ -167,7 +168,25 @@ class ChatContainer extends StatelessWidget {
 
   Widget getChatSpace() {
     return Expanded(
-      child: Container(),
+      child: BlocConsumer<MessageBloc, MessageState>(
+        listener: (context, state) {
+          // TODO: implement listener
+        },
+        builder: (context, state) {
+          if (state is MessageLoading) {
+            return CircularProgressIndicator();
+          } else if (state is MessageReceived) {
+            return ListView.builder(
+              itemCount: state.messages.length,
+              itemBuilder: (_, index) {
+                final ChatMessage chatMessage = state.messages[index];
+                return Text(chatMessage.message);
+              },
+            );
+          }
+          return Container();
+        },
+      ),
     );
   }
 
@@ -220,7 +239,7 @@ class ChatContainer extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.only(top: 4.0),
                     child: Container(
-                      width: (MediaQuery.of(context).size.width)/1.8,
+                      width: (MediaQuery.of(context).size.width) / 1.8,
                       height: 38,
                       decoration: BoxDecoration(
                           color: Colors.white.withOpacity(0.8),
