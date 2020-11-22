@@ -25,7 +25,9 @@ class ChatRepositoryMemory extends ChatRepository {
   }
 
   @override
-  void refresh() {
+  void refresh() async {
+    // Get current user
+    final user = await FirestoreService().getUserData();
     if (FirebaseFirestore.instance != null) {
       FirebaseFirestore.instance
           .collection('messages')
@@ -36,9 +38,14 @@ class ChatRepositoryMemory extends ChatRepository {
           final doc = message.data();
           _messages.add(ChatMessage.fromMap(doc));
         });
+
+        final myMessages =
+            _messages.where((message) => message.sender == user.firstName);
+        myMessages.forEach((message) {
+          message.isMe = true;
+        });
         _messagesController.add(_messages);
       });
-      print('Message recieved');
     }
   }
 

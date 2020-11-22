@@ -217,9 +217,7 @@ class ChatContainer extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.only(left: 5, top: 2),
                       child: Text(
-                        chatMessage.sender == 'ME'
-                            ? ''
-                            : '${chatMessage.sender}',
+                        chatMessage.isMe ? '' : '${chatMessage.sender}',
                         style: TextStyle(
                             fontStyle: FontStyle.italic,
                             fontFamily: 'CM Sans Serif',

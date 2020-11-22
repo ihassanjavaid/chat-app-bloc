@@ -3,7 +3,7 @@ import 'dart:convert';
 class ChatMessage {
   final String message;
   final String sender;
-  final bool isMe;
+  bool isMe;
   final DateTime timestamp;
 
   ChatMessage(
@@ -29,7 +29,7 @@ class ChatMessage {
       map['message'],
       map['sender'],
       DateTime.fromMillisecondsSinceEpoch(map['timestamp']),
-      map['isMe'],
+      map['isMe'] ?? false,
     );
   }
 
