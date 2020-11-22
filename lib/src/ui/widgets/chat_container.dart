@@ -203,9 +203,15 @@ class ChatContainer extends StatelessWidget {
                         style: TextStyle(fontFamily: 'CM Sans Serif'),
                       ),
                     ),
-                    Text(
-                      '${chatMessage.sender}',
-                      style: TextStyle(fontStyle: FontStyle.italic),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 5, top: 2),
+                      child: Text(
+                        '${chatMessage.sender}',
+                        style: TextStyle(
+                            fontStyle: FontStyle.italic,
+                            fontFamily: 'CM Sans Serif',
+                            color: kLightGreyColor),
+                      ),
                     )
                   ],
                 );
@@ -276,7 +282,6 @@ class ChatContainer extends StatelessWidget {
                         padding: const EdgeInsets.only(left: 12),
                         child: TextField(
                           controller: controller,
-
                           cursorColor: Colors.black,
                           //controller: _sendMessageController,
                           decoration: InputDecoration(
@@ -291,9 +296,9 @@ class ChatContainer extends StatelessWidget {
                       ),
                     ),
                   ),
-                  SizedBox(
-                    width: 16,
-                  ),
+                  /*SizedBox(
+                    width: 10,
+                  ),*/
                   Padding(
                     padding: const EdgeInsets.only(top: 4.0),
                     child: FlatButton.icon(

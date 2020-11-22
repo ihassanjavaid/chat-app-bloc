@@ -111,7 +111,12 @@ String getCurrentTime(){
   return '$date at $time';
 }
 
-String getHourIn12(now){
-  if (now.hour <= 12) return '${now.hour}:${now.minute} AM';
-  return '${now.hour-12}:${now.minute} PM';
+String getHourIn12(DateTime now){
+  if (now.hour <= 12) return '${now.hour}:${getMinute(now)} AM';
+  return '${now.hour-12}:${getMinute(now)} PM';
+}
+
+String getMinute(DateTime now){
+  if (now.minute < 10) return '0${now.minute}';
+  return now.minute.toString();
 }
