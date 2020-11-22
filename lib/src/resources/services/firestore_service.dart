@@ -2,7 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:the_chat_app/src/resources/utilities/userData.dart';
+import 'package:flutter/foundation.dart';
+import 'package:the_chat_app/src/models/user_model.dart';
 
 /*enum MessageType {
   announcement,
@@ -20,49 +21,16 @@ Future<void> checkInternConnection() async {
 class FirestoreService {
   final _firestore = FirebaseFirestore.instance;
   final _auth = FirebaseAuth.instance;
-  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
 
-  getDeviceToken() async {
-    final deviceToken = await _firebaseMessaging.getToken();
-    return deviceToken;
-  }
-
-  postToken() async {
-    final deviceToken = await getDeviceToken();
-    final currentUser = await _auth.currentUser;
-
-    final tokens = await _firestore.collection('deviceTokens').get();
-
-    for (var token in tokens.docs) {
-      if (deviceToken == token['deviceToken'] &&
-          currentUser.email == token['email']) return;
-    }
-
-    DocumentReference documentReference =
-        _firestore.collection('deviceTokens').doc();
-
-    await documentReference
-        .set({'deviceToken': deviceToken, 'email': currentUser.email});
-  }
-
-  Future<void> registerUser({
-    String displayName,
-    String email,
-    //bool isAdmin = false,
-  }) async {
+  Future<void> registerUser({@required ChatUser chatUser}) async {
     await checkInternConnection();
 
-    DocumentReference documentReference =
-        _firestore.collection('users').doc();
-    await documentReference.set({
-      'displayName': displayName,
-      'email': email,
-      //'isAdmin': isAdmin,
-    });
+    DocumentReference documentReference = _firestore.collection('users').doc();
+    await documentReference.set(chatUser.toMap());
   }
 
-  Future<UserData> getUserData(String email) async {
-    UserData userData;
+  Future<ChatUser> getUserData(String email) async {
+    ChatUser chatUser;
 
     await checkInternConnection();
 
@@ -71,41 +39,37 @@ class FirestoreService {
         .where('email', isEqualTo: email)
         .get();
 
-    for (var userDocument in userDocuments.documents) {
-      userData = UserData(
-        email: userDocument['email'],
-        displayName: userDocument['displayName'],
-        //isAdmin: userDocument['isAdmin'],
-      );
+    for (var userDocument in userDocuments.docs) {
+      chatUser = ChatUser.fromMap(userDocument.data());
     }
 
-    return userData;
+    return chatUser;
   }
 
-  Future<List<UserData>> getAllUsers() async {
-    List<UserData> users = [];
+  // Future<List<ChatUser>> getAllUsers() async {
+  //   List<ChatUser> users = [];
 
-    await checkInternConnection();
+  //   await checkInternConnection();
 
-    // Get current user
-    final currentUser = await _auth.currentUser;
+  //   // Get current user
+  //   final currentUser = await _auth.currentUser;
 
-    // Fetch all users
-    final userDocuments = await _firestore.collection('users').getDocuments();
+  //   // Fetch all users
+  //   final userDocuments = await _firestore.collection('users').getDocuments();
 
-    // Get each user
-    for (var user in userDocuments.documents) {
-      if (user['email'] != currentUser.email) {
-        UserData userData = UserData(
-            displayName: user['displayName'],
-            email: user['email'],
-            //isAdmin: user['isAdmin']
-        );
-        users.add(userData);
-      }
-    }
-    return users;
-  }
+  //   // Get each user
+  //   for (var user in userDocuments.documents) {
+  //     if (user['email'] != currentUser.email) {
+  //       UserData userData = UserData(
+  //         displayName: user['displayName'],
+  //         email: user['email'],
+  //         //isAdmin: user['isAdmin']
+  //       );
+  //       users.add(userData);
+  //     }
+  //   }
+  //   return users;
+  // }
 
 /*Future<void> postMessage(
       {String messageTitle,

@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:the_chat_app/src/models/user_model.dart';
 import 'package:the_chat_app/src/resources/services/auth_service.dart';
 import 'package:the_chat_app/src/resources/services/firestore_service.dart';
 import 'package:the_chat_app/src/ui/main_screen.dart';
@@ -35,7 +36,8 @@ class _LoginScreenState extends State<LoginScreen> {
   // Data Attributes
   String email;
   String password;
-  String displayName;
+  String firstName;
+  String lastName;
   String _uid;
   bool _showSpinner = false;
 
@@ -46,18 +48,13 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   initState() {
     super.initState();
-    getDeviceToken();
+
     if (Platform.isIOS) {
       //check for ios if developing for both android & ios
       AppleSignIn.onCredentialRevoked.listen((_) {
         print("Credentials revoked");
       });
     }
-  }
-
-  void getDeviceToken() async {
-    final token = await _firestoreService.getDeviceToken();
-    print(token);
   }
 
   @override
@@ -178,22 +175,15 @@ class _LoginScreenState extends State<LoginScreen> {
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(5)),
                         onPressed: () async {
-                          Navigator.pushReplacementNamed(
-                              context, MainScreen.id);
-                          /* setState(() {
+                          setState(() {
                             _showSpinner = true;
                           });
                           try {
-                            // store email in shared prefs
-                            final SharedPreferences pref =
-                                await SharedPreferences.getInstance();
-                            await pref.setString(
-                                'email', removeSpaces(this.email));
                             // login
                             await _auth.loginUserWithEmailAndPassword(
                                 email: removeSpaces(this.email),
                                 password: this.password);
-                            await _firestoreService.postToken();
+
                             //await _decideRoute();
                             Navigator.pushReplacementNamed(
                                 context, MainScreen.id);
@@ -208,7 +198,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           }
                           setState(() {
                             _showSpinner = false;
-                          }); */
+                          });
                         },
                       )
                     ],
@@ -261,8 +251,6 @@ class _LoginScreenState extends State<LoginScreen> {
                   await pref.setString('email', _fbuser.email);
                   await pref.setString('displayName', _fbuser.displayName);
 
-                  await _firestoreService.postToken();
-
                   Navigator.pushReplacementNamed(context, MainScreen.id);
                 } catch (e) {
                   AlertComponent()
@@ -295,10 +283,12 @@ class _LoginScreenState extends State<LoginScreen> {
                   switch (result.status) {
                     case AuthorizationStatus.authorized:
                       print(result.credential.user);
-                      await _firestoreService.postToken();
+
                       await _firestoreService.registerUser(
-                          email: result.credential.email,
-                          displayName: result.credential.fullName.toString());
+                          chatUser: ChatUser(
+                              result.credential.fullName.givenName,
+                              result.credential.fullName.familyName,
+                              email));
                       Navigator.pushReplacementNamed(context, MainScreen.id);
                       break;
 
@@ -363,9 +353,18 @@ class _LoginScreenState extends State<LoginScreen> {
                     height: 15,
                   ),
                   CustomTextField(
-                    placeholder: 'Your Name',
+                    placeholder: 'First Name',
                     onChanged: (value) {
-                      this.displayName = value;
+                      this.firstName = value;
+                    },
+                  ),
+                  SizedBox(
+                    height: 15,
+                  ),
+                  CustomTextField(
+                    placeholder: 'Last Name',
+                    onChanged: (value) {
+                      this.lastName = value;
                     },
                   ),
                   SizedBox(
@@ -418,16 +417,17 @@ class _LoginScreenState extends State<LoginScreen> {
                               _showSpinner = true;
                             });
                             try {
-                              //final fixedEmail = removeSpaces(this.email);
                               await _auth.registerUser(
                                   email: removeSpaces(this.email),
                                   password: this.password);
-                              /*await _auth.updateUserInfo(
-                                  displayName: this.displayName);*/
+
                               await _firestoreService.registerUser(
-                                  email: removeSpaces(this.email),
-                                  displayName: this.displayName);
-                              await _firestoreService.postToken();
+                                  chatUser: ChatUser(
+                                this.firstName,
+                                this.lastName,
+                                this.email,
+                              ));
+
                               Navigator.pushReplacementNamed(
                                   context, MainScreen.id);
                             } catch (e) {
@@ -486,7 +486,9 @@ class _LoginScreenState extends State<LoginScreen> {
                 color: Colors.white,
               ),
             ),
-            onPressed: () {},
+            onPressed: () {
+              // TODO: Add functionality
+            },
           ),
         ),
       ],
@@ -497,20 +499,11 @@ class _LoginScreenState extends State<LoginScreen> {
     return Container(
       height: screenHeight,
       decoration: BoxDecoration(
-          gradient: LinearGradient(
-              colors: [kRedColor, kOrangeColor],
-              begin: Alignment.bottomCenter,
-              end: Alignment.topCenter)),
-    );
-  }
-
-  /*Widget lowerHalf(BuildContext context) {
-    return Align(
-      alignment: Alignment.bottomCenter,
-      child: Container(
-        height: screenHeight / 2,
-        color: Color(0xFFECF0F3),
+        gradient: LinearGradient(
+            colors: [kRedColor, kOrangeColor],
+            begin: Alignment.bottomCenter,
+            end: Alignment.topCenter),
       ),
     );
-  }*/
+  }
 }
