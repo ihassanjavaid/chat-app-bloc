@@ -124,11 +124,13 @@ class ChatContainer extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      'The\tCabinet',
+                      'Group\tName',
                       style: TextStyle(
                           fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black),
+                          //fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                          fontFamily: 'CM Sans Serif'
+                      ),
                     ),
                     SizedBox(
                       height: 3,

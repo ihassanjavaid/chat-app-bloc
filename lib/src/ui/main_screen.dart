@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:the_chat_app/src/ui/widgets/chat_container.dart';
+import 'package:intl/intl.dart';
 
 class MainScreen extends StatelessWidget {
   static const String id = 'main_screen';
@@ -19,6 +20,7 @@ class MainScreen extends StatelessWidget {
                 Color(0xffc0012a),
                 Color(0xffe78c70),
               ],
+              stops: [0.1, 0.2]
             ),
           ),
           child: getColumn(context),
@@ -55,16 +57,55 @@ class MainScreen extends StatelessWidget {
             alignment: constraints.biggest.height >= threshold
                 ? Alignment.center
                 : Alignment.centerLeft,
-            child: Text(
-              'Cabinet',
+            child: /*Text(
+              'THISRTY THURSDAY'
+                  '${getCurretTime()}',
               style: TextStyle(
                   color: Colors.white,
+                  fontFamily: 'CM Sans Serif',
                   fontSize: 24.0,
-                  fontWeight: FontWeight.bold),
+                  //fontWeight: FontWeight.bold
+              ),
+            ),*/
+            RichText(
+              text: TextSpan(
+                children: [
+                  TextSpan(
+                    text: 'THIRSTY THURSDAY',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontFamily: 'CM Sans Serif',
+                      fontSize: 24.0,
+                      fontWeight: FontWeight.bold
+                    ),
+                  ),
+                  TextSpan(
+                    text: '\n'
+                  ),
+                  TextSpan(
+                    text: '${getCurrentTime()}',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontFamily: 'CM Sans Serif',
+                      fontSize: 16.0,
+                      //fontWeight: FontWeight.bold
+                    ),
+                  )
+                ]
+              ),
+
             ),
           ),
         ),
       ),
     );
   }
+}
+
+String getCurrentTime(){
+  DateTime now = DateTime.now();
+  String date = DateFormat('yyyy-MM-dd').format(now);
+  String time = now.hour.toString() + ":" + now.minute.toString();
+
+  return '$date at $time';
 }
