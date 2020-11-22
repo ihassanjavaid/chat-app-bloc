@@ -1,3 +1,4 @@
+import 'package:bubble/bubble.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:the_chat_app/src/blocs/chat_bloc/chat_bloc.dart';
@@ -129,11 +130,12 @@ class ChatContainer extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      'The\tCabinet',
+                      'Group\tA',
                       style: TextStyle(
                           fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black),
+                          //fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                          fontFamily: 'CM Sans Serif'),
                     ),
                     SizedBox(
                       height: 3,
@@ -185,7 +187,28 @@ class ChatContainer extends StatelessWidget {
               itemCount: state.messages.length,
               itemBuilder: (_, index) {
                 final ChatMessage chatMessage = state.messages[index];
-                return Text(chatMessage.message);
+                //return Text(chatMessage.message);
+                double bubbleSpace = MediaQuery.of(context).size.width / 2.1;
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Bubble(
+                      margin: BubbleEdges.only(
+                          top: 10, right: bubbleSpace, left: 5),
+                      nip: BubbleNip.leftBottom,
+                      elevation: 1,
+                      color: kLightGreyColor,
+                      child: Text(
+                        chatMessage.message,
+                        style: TextStyle(fontFamily: 'CM Sans Serif'),
+                      ),
+                    ),
+                    Text(
+                      '${chatMessage.sender}',
+                      style: TextStyle(fontStyle: FontStyle.italic),
+                    )
+                  ],
+                );
               },
             );
           }

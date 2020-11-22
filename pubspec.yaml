@@ -45,6 +45,7 @@ dependencies:
   permission_handler: ^5.0.0+hotfix.3
   rflutter_alert: ^1.0.2
   shared_preferences: ^0.5.12+4
+  bubble: ^1.1.9+1
 
 dev_dependencies:
   flutter_test:
@@ -85,3 +86,8 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+
+  fonts:
+    - family: CM Sans Serif
+      fonts:
+        - asset: assets/fonts/cm_sans_serif_2012.ttf
