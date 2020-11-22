@@ -125,7 +125,7 @@ class ChatContainer extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      'Group\tName',
+                      'Group\tA',
                       style: TextStyle(
                           fontSize: 18,
                           //fontWeight: FontWeight.bold,
