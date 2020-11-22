@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:the_chat_app/src/blocs/chat_bloc/chat_bloc.dart';
 import 'package:the_chat_app/src/models/chat_size.dart';
-import 'package:the_chat_app/src/resources/chat_size_repository.dart';
 
 class MainScreen extends StatelessWidget {
   static const String id = 'main_screen';
