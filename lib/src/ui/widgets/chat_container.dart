@@ -236,102 +236,80 @@ class ChatContainer extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            Expanded(
-              flex: 1,
-              child: Row(
-                children: <Widget>[
-                  SizedBox(
-                    width: 4.0,
+            Row(
+              children: <Widget>[
+                SizedBox(
+                  width: 4.0,
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 5.0),
+                  child: Icon(
+                    Icons.camera_alt,
+                    size: 30,
+                    color: kRedColor,
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 5.0),
-                    child: Icon(
-                      Icons.camera_alt,
-                      size: 30,
-                      color: kRedColor,
-                    ),
+                ),
+                SizedBox(
+                  width: 12.0,
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 5.0),
+                  child: Icon(
+                    Icons.photo,
+                    size: 30,
+                    color: kRedColor,
                   ),
-                  SizedBox(
-                    width: 12.0,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 5.0),
-                    child: Icon(
-                      Icons.photo,
-                      size: 30,
-                      color: kRedColor,
-                    ),
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
             SizedBox(
               width: 4.0,
             ),
             Expanded(
-              flex: 3,
-              child: Row(
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.only(top: 4.0),
-                    child: Container(
-                      width: (MediaQuery.of(context).size.width) / 1.8,
-                      height: 38,
-                      decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(0.8),
-                          borderRadius: BorderRadius.circular(20)),
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 12),
-                        child: TextField(
-                          controller: controller,
-                          cursorColor: Colors.black,
-                          //controller: _sendMessageController,
-                          decoration: InputDecoration(
-                              border: InputBorder.none,
-                              hintText: 'Text Message',
-                              suffixIcon: Icon(
-                                Icons.face,
-                                color: kRedColor,
-                                size: 28,
-                              )),
-                        ),
-                      ),
+              child: Padding(
+                padding: const EdgeInsets.only(top: 4.0),
+                child: Container(
+                  padding: const EdgeInsets.only(left: 12),
+                  width: (MediaQuery.of(context).size.width) / 1.8,
+                  height: 38,
+                  decoration: BoxDecoration(
+                      color: Colors.white.withOpacity(0.8),
+                      borderRadius: BorderRadius.circular(20)),
+                  child: TextField(
+                    controller: controller,
+                    cursorColor: Colors.black,
+                    //controller: _sendMessageController,
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                      hintText: 'Text Message',
                     ),
                   ),
-                  /*SizedBox(
-                    width: 10,
-                  ),*/
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 4.0),
-                      child: FlatButton.icon(
-                        onPressed: () async {
-                          try {
-                            // ignore: close_sinks
-                            final messageBloc = context.read<MessageBloc>();
-                            final sender =
-                                await FirestoreService().getUserData();
-                            final message = controller.text;
-                            final timestamp = DateTime.now();
-                            messageBloc.add(
-                              SendMessageEvent(
-                                ChatMessage(
-                                    message, sender.firstName, timestamp),
-                              ),
-                            );
-                            controller.text = '';
-                          } catch (_) {}
-                        },
-                        icon: Icon(
-                          Icons.send,
-                          size: 30,
-                          color: kRedColor,
-                        ),
-                        label: Text('Send'),
-                      ),
+                ),
+              ),
+            ),
+            SizedBox(
+              width: 8.0,
+            ),
+            GestureDetector(
+              onTap: () async {
+                try {
+                  // ignore: close_sinks
+                  final messageBloc = context.read<MessageBloc>();
+                  final sender = await FirestoreService().getUserData();
+                  final message = controller.text;
+                  final timestamp = DateTime.now();
+                  messageBloc.add(
+                    SendMessageEvent(
+                      ChatMessage(message, sender.firstName, timestamp),
                     ),
-                  ),
-                ],
+                  );
+                  controller.text = '';
+                } catch (_) {}
+              },
+              child: Icon(
+                Icons.send,
+                size: 30,
+                color: kRedColor,
               ),
             ),
           ],
