@@ -26,3 +26,21 @@ class ChatMoving extends ChatState {
 class ChatMoved extends ChatState {}
 
 class ChatCollapsed extends ChatState {}
+
+class ChatRecievedState extends ChatState {
+  final ChatMessage chatMessage;
+
+  ChatRecievedState(this.chatMessage);
+
+  @override
+  bool operator ==(Object o) {
+    if (identical(this, o)) return true;
+
+    return o is ChatRecieved && o.chatMessage == chatMessage;
+  }
+
+  @override
+  int get hashCode => chatMessage.hashCode;
+}
+
+class ChatSentState extends ChatState {}

@@ -1,10 +1,10 @@
 import 'package:the_chat_app/src/models/chat_size.dart';
 
-abstract class ChatSizeRepository {
+abstract class ChatRepository {
   ChatSize updateSize(ChatSize size);
 }
 
-class UpdateChatSize extends ChatSizeRepository {
+class UpdateChatSize extends ChatRepository {
   @override
   ChatSize updateSize(ChatSize size) {
     final double kChatMinHeight = 100;

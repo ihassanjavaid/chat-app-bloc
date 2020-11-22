@@ -8,3 +8,15 @@ class ChatSizeUpdate extends ChatEvent {
 
   ChatSizeUpdate(this.size);
 }
+
+class ChatSent extends ChatEvent {
+  final ChatMessage chatMessage;
+
+  ChatSent(this.chatMessage);
+}
+
+class ChatRecieved extends ChatEvent {
+  final ChatMessage chatMessage;
+
+  ChatRecieved(this.chatMessage);
+}
