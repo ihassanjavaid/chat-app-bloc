@@ -191,14 +191,23 @@ class ChatContainer extends StatelessWidget {
                 //return Text(chatMessage.message);
                 double bubbleSpace = MediaQuery.of(context).size.width / 2.1;
                 return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: chatMessage.sender == 'ME'
+                      ? CrossAxisAlignment.end
+                      : CrossAxisAlignment.start,
                   children: [
                     Bubble(
-                      margin: BubbleEdges.only(
-                          top: 10, right: bubbleSpace, left: 5),
-                      nip: BubbleNip.leftBottom,
+                      margin: chatMessage.sender == 'ME'
+                          ? BubbleEdges.only(
+                              top: 10, right: 5, left: bubbleSpace)
+                          : BubbleEdges.only(
+                              top: 10, right: bubbleSpace, left: 5),
+                      nip: chatMessage.sender == 'ME'
+                          ? BubbleNip.rightBottom
+                          : BubbleNip.leftBottom,
                       elevation: 1,
-                      color: kLightGreyColor,
+                      color: chatMessage.sender == 'ME'
+                          ? kOrangeColor
+                          : kLightGreyColor,
                       child: Text(
                         chatMessage.message,
                         style: TextStyle(fontFamily: 'CM Sans Serif'),
@@ -207,7 +216,9 @@ class ChatContainer extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.only(left: 5, top: 2),
                       child: Text(
-                        '${chatMessage.sender}',
+                        chatMessage.sender == 'ME'
+                            ? ''
+                            : '${chatMessage.sender}',
                         style: TextStyle(
                             fontStyle: FontStyle.italic,
                             fontFamily: 'CM Sans Serif',
