@@ -188,6 +188,7 @@ class ChatContainer extends StatelessWidget {
               itemCount: state.messages.length,
               itemBuilder: (_, index) {
                 final ChatMessage chatMessage = state.messages[index];
+
                 //return Text(chatMessage.message);
                 double bubbleSpace = MediaQuery.of(context).size.width / 2.1;
                 return Column(

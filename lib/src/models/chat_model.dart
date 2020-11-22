@@ -3,14 +3,21 @@ import 'dart:convert';
 class ChatMessage {
   final String message;
   final String sender;
+  final bool isMe;
   final DateTime timestamp;
 
-  ChatMessage(this.message, this.sender, this.timestamp);
+  ChatMessage(
+    this.message,
+    this.sender,
+    this.timestamp, [
+    this.isMe,
+  ]);
 
   Map<String, dynamic> toMap() {
     return {
       'message': message,
       'sender': sender,
+      'isMe': isMe,
       'timestamp': timestamp?.millisecondsSinceEpoch,
     };
   }
@@ -22,6 +29,7 @@ class ChatMessage {
       map['message'],
       map['sender'],
       DateTime.fromMillisecondsSinceEpoch(map['timestamp']),
+      map['isMe'],
     );
   }
 

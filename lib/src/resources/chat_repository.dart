@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:the_chat_app/src/models/chat_model.dart';
+import 'package:the_chat_app/src/resources/services/firestore_service.dart';
 
 abstract class ChatRepository {
   Stream<List<ChatMessage>> chatMessages();
