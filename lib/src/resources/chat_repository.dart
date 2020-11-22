@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:the_chat_app/src/models/chat_model.dart';
 
 abstract class ChatRepository {
@@ -7,6 +8,7 @@ abstract class ChatRepository {
 
   void refresh();
   void dispose();
+  void sendMessage(ChatMessage message);
 }
 
 class ChatRepositoryMemory extends ChatRepository {
@@ -38,39 +40,11 @@ class ChatRepositoryMemory extends ChatRepository {
       });
     }
   }
-}
-/* 
-class TipRepositoryFirestore extends TipRepository {
-
-  final _loadedData = StreamController<List<Tip>>();
-
-  final _cache = List<Tip>();
 
   @override
-  void dispose() {
-    _loadedData.close();
-  }
-
-  @override
-  void refresh() {
-    if (Firestore.instance != null) {
-      Firestore.instance
-          .collection('tips')
-          .snapshots()
-          .listen((techniques) {
-        _cache.clear();
-        techniques.documents.forEach((tip) {
-          final doc = tip.data;
-          _cache.add(Tip(doc["tipName"], doc["shortTipText"], doc["fullTipText"]));
-        });
-
-        _loadedData.add(_cache);
-      });
+  void sendMessage(ChatMessage message) {
+    if (FirebaseFirestore.instance != null) {
+      FirebaseFirestore.instance.collection('messages').add(message.toMap());
     }
   }
-
-  @override
-  Stream<List<Tip>> tips() => _loadedData.stream;
-
 }
-*/

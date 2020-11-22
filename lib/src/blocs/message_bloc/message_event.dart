@@ -8,3 +8,9 @@ class NewMessageEvent extends MessageEvent {
 
   NewMessageEvent(this.messages);
 }
+
+class SendMessageEvent extends MessageEvent {
+  final ChatMessage message;
+
+  SendMessageEvent(this.message);
+}

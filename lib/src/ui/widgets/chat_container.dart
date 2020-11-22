@@ -5,12 +5,16 @@ import 'package:the_chat_app/src/blocs/chat_bloc/chat_bloc.dart';
 import 'package:the_chat_app/src/blocs/message_bloc/message_bloc.dart';
 import 'package:the_chat_app/src/models/chat_model.dart';
 import 'package:the_chat_app/src/models/chat_size.dart';
+import 'package:the_chat_app/src/resources/services/auth_service.dart';
 import 'package:the_chat_app/src/resources/utilities/constants.dart';
+
+final TextEditingController controller = TextEditingController();
 
 class ChatContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ChatSize size;
+
     return GestureDetector(
       onVerticalDragUpdate: (drag) {
         // ignore: close_sinks
@@ -23,7 +27,7 @@ class ChatContainer extends StatelessWidget {
           // TODO: implement listener
         },
         builder: (_, state) {
-          if (state is ChatInitial) {
+          if (size == null) {
             size = ChatSize(
               height: MediaQuery.of(context).size.height * 0.84,
               width: MediaQuery.of(context).size.width,
@@ -31,7 +35,8 @@ class ChatContainer extends StatelessWidget {
               screenMaxWidth: MediaQuery.of(context).size.width,
               maxHeightConstraint: 0.85,
             );
-          } else if (state is ChatMoving) {
+          }
+          if (state is ChatMoving) {
             size = state.size;
           } else if (state is ChatCollapsed) {
             return getCollapsedChat();
@@ -169,13 +174,13 @@ class ChatContainer extends StatelessWidget {
   }
 
   Widget getChatSpace() {
-    return Expanded(
+    return Flexible(
       child: BlocConsumer<MessageBloc, MessageState>(
         listener: (context, state) {
           // TODO: implement listener
         },
         builder: (context, state) {
-          if (state is MessageLoading) {
+          if (state is MessageInitial) {
             return CircularProgressIndicator();
           } else if (state is MessageReceived) {
             return ListView.builder(
@@ -270,6 +275,8 @@ class ChatContainer extends StatelessWidget {
                       child: Padding(
                         padding: const EdgeInsets.only(left: 12),
                         child: TextField(
+                          controller: controller,
+
                           cursorColor: Colors.black,
                           //controller: _sendMessageController,
                           decoration: InputDecoration(
@@ -289,10 +296,28 @@ class ChatContainer extends StatelessWidget {
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top: 4.0),
-                    child: Icon(
-                      Icons.thumb_up,
-                      size: 30,
-                      color: kRedColor,
+                    child: FlatButton.icon(
+                      onPressed: () {
+                        try {
+                          final messageBloc = context.read<MessageBloc>();
+                          final sender = Auth().getCurrentUser().displayName;
+                          final message = controller.text;
+                          final timestamp = DateTime.now();
+                          messageBloc.add(
+                            SendMessageEvent(
+                              ChatMessage(message, sender, timestamp),
+                            ),
+                          );
+                          controller.text = '';
+                          messageBloc.close();
+                        } catch (_) {}
+                      },
+                      icon: Icon(
+                        Icons.send,
+                        size: 30,
+                        color: kRedColor,
+                      ),
+                      label: Text('Send'),
                     ),
                   ),
                 ],

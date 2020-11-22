@@ -24,6 +24,11 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
   ) async* {
     if (event is NewMessageEvent) {
       yield MessageReceived(event.messages);
+      yield Ready();
+    } else if (event is SendMessageEvent) {
+      ChatMessage message = event.message;
+      _chatRespository.sendMessage(message);
+      // yield MessageSent();
     }
   }
 

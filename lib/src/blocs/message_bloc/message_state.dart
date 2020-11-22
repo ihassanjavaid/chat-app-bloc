@@ -12,3 +12,5 @@ class MessageReceived extends MessageState {
 
   MessageReceived(this.messages);
 }
+
+class Ready extends MessageState {}
