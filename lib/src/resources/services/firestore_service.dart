@@ -4,6 +4,7 @@ import 'package:connectivity/connectivity.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:the_chat_app/src/models/user_model.dart';
+import 'package:the_chat_app/src/resources/services/auth_service.dart';
 
 /*enum MessageType {
   announcement,
@@ -29,8 +30,9 @@ class FirestoreService {
     await documentReference.set(chatUser.toMap());
   }
 
-  Future<ChatUser> getUserData(String email) async {
+  Future<ChatUser> getUserData() async {
     ChatUser chatUser;
+    final email = Auth().getCurrentUser();
 
     await checkInternConnection();
 
@@ -45,53 +47,4 @@ class FirestoreService {
 
     return chatUser;
   }
-
-  // Future<List<ChatUser>> getAllUsers() async {
-  //   List<ChatUser> users = [];
-
-  //   await checkInternConnection();
-
-  //   // Get current user
-  //   final currentUser = await _auth.currentUser;
-
-  //   // Fetch all users
-  //   final userDocuments = await _firestore.collection('users').getDocuments();
-
-  //   // Get each user
-  //   for (var user in userDocuments.documents) {
-  //     if (user['email'] != currentUser.email) {
-  //       UserData userData = UserData(
-  //         displayName: user['displayName'],
-  //         email: user['email'],
-  //         //isAdmin: user['isAdmin']
-  //       );
-  //       users.add(userData);
-  //     }
-  //   }
-  //   return users;
-  // }
-
-/*Future<void> postMessage(
-      {String messageTitle,
-      String messageText,
-      String receiverEmail,
-      String imageReference,
-      MessageType messageType}) async {
-    await checkInternConnection();
-
-    final DocumentReference documentReference =
-        _firestore.collection('messages').document();
-
-    await documentReference.setData({
-      'imageReference': imageReference,
-      'messageTitle': messageTitle,
-      'messageText': messageText,
-      'messageType': messageType == MessageType.announcement
-          ? 'announcement'
-          : 'privateMessage',
-      'receiverEmail': receiverEmail,
-      'timestamp': DateTime.now().millisecondsSinceEpoch
-    }, merge: true);
-  }*/
-
 }

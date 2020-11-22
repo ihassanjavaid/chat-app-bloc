@@ -1,10 +1,8 @@
 import 'dart:async';
-
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:the_chat_app/src/models/chat_model.dart';
 import 'package:the_chat_app/src/resources/chat_repository.dart';
-
 part 'message_event.dart';
 part 'message_state.dart';
 
@@ -24,11 +22,10 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
   ) async* {
     if (event is NewMessageEvent) {
       yield MessageReceived(event.messages);
-      yield Ready();
     } else if (event is SendMessageEvent) {
       ChatMessage message = event.message;
       _chatRespository.sendMessage(message);
-      // yield MessageSent();
+      yield MessageSent();
     }
   }
 

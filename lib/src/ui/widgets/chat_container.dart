@@ -6,6 +6,7 @@ import 'package:the_chat_app/src/blocs/message_bloc/message_bloc.dart';
 import 'package:the_chat_app/src/models/chat_model.dart';
 import 'package:the_chat_app/src/models/chat_size.dart';
 import 'package:the_chat_app/src/resources/services/auth_service.dart';
+import 'package:the_chat_app/src/resources/services/firestore_service.dart';
 import 'package:the_chat_app/src/resources/utilities/constants.dart';
 
 final TextEditingController controller = TextEditingController();
@@ -303,19 +304,21 @@ class ChatContainer extends StatelessWidget {
                     child: Padding(
                       padding: const EdgeInsets.only(top: 4.0),
                       child: FlatButton.icon(
-                        onPressed: () {
+                        onPressed: () async {
                           try {
+                            // ignore: close_sinks
                             final messageBloc = context.read<MessageBloc>();
-                            final sender = Auth().getCurrentUser().displayName;
+                            final sender =
+                                await FirestoreService().getUserData();
                             final message = controller.text;
                             final timestamp = DateTime.now();
                             messageBloc.add(
                               SendMessageEvent(
-                                ChatMessage(message, sender, timestamp),
+                                ChatMessage(
+                                    message, sender.firstName, timestamp),
                               ),
                             );
                             controller.text = '';
-                            messageBloc.close();
                           } catch (_) {}
                         },
                         icon: Icon(
