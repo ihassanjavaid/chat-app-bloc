@@ -2,8 +2,9 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
+import 'package:the_chat_app/src/models/chat_model.dart';
 import 'package:the_chat_app/src/models/chat_size.dart';
-import 'package:the_chat_app/src/resources/chat_size_repository.dart';
+import 'package:the_chat_app/src/resources/chat_size_respository.dart';
 
 part 'chat_event.dart';
 part 'chat_state.dart';
