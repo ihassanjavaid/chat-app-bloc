@@ -18,9 +18,10 @@ class MainScreen extends StatelessWidget {
               end: Alignment.bottomCenter,
               colors: [
                 Color(0xffc0012a),
+                Color(0xffd94e23),
                 Color(0xffe78c70),
               ],
-              stops: [0.1, 0.2]
+              stops: [0.1, 0.4, 0.7]
             ),
           ),
           child: getColumn(context),
@@ -104,8 +105,13 @@ class MainScreen extends StatelessWidget {
 
 String getCurrentTime(){
   DateTime now = DateTime.now();
-  String date = DateFormat('yyyy-MM-dd').format(now);
-  String time = now.hour.toString() + ":" + now.minute.toString();
+  String date = DateFormat('MMMM dd').format(now);
+  String time = getHourIn12(now);
 
   return '$date at $time';
+}
+
+String getHourIn12(now){
+  if (now.hour <= 12) return '${now.hour}:${now.minute} AM';
+  return '${now.hour-12}:${now.minute} PM';
 }
