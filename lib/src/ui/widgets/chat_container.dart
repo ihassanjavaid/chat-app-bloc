@@ -299,30 +299,32 @@ class ChatContainer extends StatelessWidget {
                   /*SizedBox(
                     width: 10,
                   ),*/
-                  Padding(
-                    padding: const EdgeInsets.only(top: 4.0),
-                    child: FlatButton.icon(
-                      onPressed: () {
-                        try {
-                          final messageBloc = context.read<MessageBloc>();
-                          final sender = Auth().getCurrentUser().displayName;
-                          final message = controller.text;
-                          final timestamp = DateTime.now();
-                          messageBloc.add(
-                            SendMessageEvent(
-                              ChatMessage(message, sender, timestamp),
-                            ),
-                          );
-                          controller.text = '';
-                          messageBloc.close();
-                        } catch (_) {}
-                      },
-                      icon: Icon(
-                        Icons.send,
-                        size: 30,
-                        color: kRedColor,
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 4.0),
+                      child: FlatButton.icon(
+                        onPressed: () {
+                          try {
+                            final messageBloc = context.read<MessageBloc>();
+                            final sender = Auth().getCurrentUser().displayName;
+                            final message = controller.text;
+                            final timestamp = DateTime.now();
+                            messageBloc.add(
+                              SendMessageEvent(
+                                ChatMessage(message, sender, timestamp),
+                              ),
+                            );
+                            controller.text = '';
+                            messageBloc.close();
+                          } catch (_) {}
+                        },
+                        icon: Icon(
+                          Icons.send,
+                          size: 30,
+                          color: kRedColor,
+                        ),
+                        label: Text('Send'),
                       ),
-                      label: Text('Send'),
                     ),
                   ),
                 ],
