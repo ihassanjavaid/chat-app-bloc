@@ -136,7 +136,7 @@ class ChatContainer extends StatelessWidget {
                       height: 3,
                     ),
                     Text(
-                      'Talha, Ali, Osama',
+                      'You, Elvin, Arrow',
                       style: TextStyle(
                           color: Colors.black.withOpacity(0.4), fontSize: 14),
                     )
