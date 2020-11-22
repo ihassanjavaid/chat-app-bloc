@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:the_chat_app/src/models/user_model.dart';
 import 'package:the_chat_app/src/resources/services/auth_service.dart';
 
@@ -46,5 +47,22 @@ class FirestoreService {
     }
 
     return chatUser;
+  }
+
+  Future<String> getUsersInChat() async {
+    String usersList = '';
+
+    await checkInternConnection();
+
+    final userDocuments = await _firestore
+        .collection('users')
+        .get();
+    
+    for (var userName in userDocuments.docs){
+      usersList = usersList + ', ${userName.get('firstName')}';
+    }
+
+    print(usersList);
+    return usersList;
   }
 }
