@@ -1,9 +1,9 @@
 import 'dart:convert';
 
 class ChatUser {
-  final String firstName;
-  final String lastName;
-  final String email;
+  String firstName;
+  String lastName;
+  String email;
 
   ChatUser(this.firstName, this.lastName, this.email);
 
