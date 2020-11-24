@@ -19,6 +19,8 @@ class AuthUser {
     return _authUser;
   }
 
+  static void destroyInstance() => _authUser = null;
+
   AuthUser._internal() {
     _chatUser = ChatUser('firstName', 'lastName', 'email');
   }

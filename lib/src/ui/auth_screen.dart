@@ -3,10 +3,14 @@ import 'package:apple_sign_in/apple_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:the_chat_app/src/blocs/auth_bloc/auth_bloc.dart';
+import 'package:the_chat_app/src/models/auth_model.dart';
 import 'package:the_chat_app/src/models/chat_user.dart';
+import 'package:the_chat_app/src/resources/auth_repository.dart';
 import 'package:the_chat_app/src/resources/services/auth_service.dart';
 import 'package:the_chat_app/src/resources/services/firestore_service.dart';
 import 'package:the_chat_app/src/ui/main_screen.dart';
@@ -20,7 +24,36 @@ class AuthScreen extends StatelessWidget {
   static const String id = 'auth_screen';
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Scaffold(
+      body: SingleChildScrollView(
+        child: BlocConsumer<AuthBloc, AuthState>(
+          builder: (_, state) {
+            if (state is AuthLoading) {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+            if (state is AuthRegister) {
+              return Stack(
+                children: [
+                  backgroundPage(context),
+                  signUpCard(context),
+                  pageTitle(),
+                ],
+              );
+            }
+            return Stack(
+              children: [
+                backgroundPage(context),
+                loginCard(context),
+                pageTitle(),
+              ],
+            );
+          },
+          listener: null,
+        ),
+      ),
+    );
   }
 
   Widget backgroundPage(BuildContext context) {
@@ -63,6 +96,10 @@ class AuthScreen extends StatelessWidget {
   }
 
   Widget loginCard(BuildContext context) {
+    AuthUser user = AuthUser.getInstance();
+    // ignore: close_sinks
+    AuthBloc authBloc = context.read<AuthBloc>();
+
     return Column(
       children: <Widget>[
         Container(
@@ -98,7 +135,8 @@ class AuthScreen extends StatelessWidget {
                 CustomTextField(
                   placeholder: 'Email',
                   onChanged: (value) {
-                    // this.email = value;
+                    authBloc.add(
+                        CredentialsEntryEvent(value, CredentialType.Username));
                   },
                 ),
                 SizedBox(
@@ -108,7 +146,8 @@ class AuthScreen extends StatelessWidget {
                   placeholder: "Password",
                   isPassword: true,
                   onChanged: (value) {
-                    // this.password = value;
+                    authBloc.add(
+                        CredentialsEntryEvent(value, CredentialType.Password));
                   },
                 ),
                 SizedBox(
@@ -117,10 +156,10 @@ class AuthScreen extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
-                    /*MaterialButton(
+                    MaterialButton(
                       onPressed: () {},
                       child: Text("Forgot Password ?"),
-                    ),*/
+                    ),
                     Spacer(),
                     FlatButton(
                       child: Text("Login"),
@@ -130,7 +169,8 @@ class AuthScreen extends StatelessWidget {
                           left: 38, right: 38, top: 15, bottom: 15),
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(5)),
-                      onPressed: () async {
+                      onPressed: () {
+                        authBloc.add(LoginEvent());
                         /* setState(() {
                           _showSpinner = true;
                         });
