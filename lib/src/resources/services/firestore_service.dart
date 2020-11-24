@@ -29,69 +29,39 @@ class FirestoreService {
     await documentReference.set(chatUser.toMap());
   }
 
-  Future<ChatUser> getUserData(String email) async {
+  Future<ChatUser> getUserData() async {
     ChatUser chatUser;
+    final email = Auth().getCurrentUser().email;
 
     await checkInternConnection();
+    try {
+      final userDocuments = await _firestore
+          .collection('users')
+          .where('email', isEqualTo: email)
+          .get();
 
-    final userDocuments = await _firestore
-        .collection('users')
-        .where('email', isEqualTo: email)
-        .get();
-
-    for (var userDocument in userDocuments.docs) {
-      chatUser = ChatUser.fromMap(userDocument.data());
+      for (var userDocument in userDocuments.docs) {
+        chatUser = ChatUser.fromMap(userDocument.data());
+      }
+    } catch (err) {
+      print(err);
     }
 
     return chatUser;
   }
 
-  // Future<List<ChatUser>> getAllUsers() async {
-  //   List<ChatUser> users = [];
+  Future<String> getUsersInChat() async {
+    String usersList = '';
 
-  //   await checkInternConnection();
-
-  //   // Get current user
-  //   final currentUser = await _auth.currentUser;
-
-  //   // Fetch all users
-  //   final userDocuments = await _firestore.collection('users').getDocuments();
-
-  //   // Get each user
-  //   for (var user in userDocuments.documents) {
-  //     if (user['email'] != currentUser.email) {
-  //       UserData userData = UserData(
-  //         displayName: user['displayName'],
-  //         email: user['email'],
-  //         //isAdmin: user['isAdmin']
-  //       );
-  //       users.add(userData);
-  //     }
-  //   }
-  //   return users;
-  // }
-
-/*Future<void> postMessage(
-      {String messageTitle,
-      String messageText,
-      String receiverEmail,
-      String imageReference,
-      MessageType messageType}) async {
     await checkInternConnection();
 
-    final DocumentReference documentReference =
-        _firestore.collection('messages').document();
+    final userDocuments = await _firestore.collection('users').get();
 
-    await documentReference.setData({
-      'imageReference': imageReference,
-      'messageTitle': messageTitle,
-      'messageText': messageText,
-      'messageType': messageType == MessageType.announcement
-          ? 'announcement'
-          : 'privateMessage',
-      'receiverEmail': receiverEmail,
-      'timestamp': DateTime.now().millisecondsSinceEpoch
-    }, merge: true);
-  }*/
+    for (var userName in userDocuments.docs) {
+      usersList = usersList + ', ${userName.get('firstName')}';
+    }
 
+    print(usersList);
+    return usersList;
+  }
 }

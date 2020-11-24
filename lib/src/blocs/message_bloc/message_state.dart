@@ -14,3 +14,5 @@ class MessageReceived extends MessageState {
 }
 
 class Ready extends MessageState {}
+
+class MessageSent extends MessageState {}

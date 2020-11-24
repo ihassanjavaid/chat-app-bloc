@@ -6,6 +6,7 @@ import 'package:the_chat_app/src/blocs/message_bloc/message_bloc.dart';
 import 'package:the_chat_app/src/models/chat_model.dart';
 import 'package:the_chat_app/src/models/chat_size.dart';
 import 'package:the_chat_app/src/resources/services/auth_service.dart';
+import 'package:the_chat_app/src/resources/services/firestore_service.dart';
 import 'package:the_chat_app/src/resources/utilities/constants.dart';
 
 final TextEditingController controller = TextEditingController();
@@ -141,7 +142,7 @@ class ChatContainer extends StatelessWidget {
                       height: 3,
                     ),
                     Text(
-                      'Talha, Ali, Osama',
+                      'You, Elvin, Arrow',
                       style: TextStyle(
                           color: Colors.black.withOpacity(0.4), fontSize: 14),
                     )
@@ -187,25 +188,39 @@ class ChatContainer extends StatelessWidget {
               itemCount: state.messages.length,
               itemBuilder: (_, index) {
                 final ChatMessage chatMessage = state.messages[index];
+
                 //return Text(chatMessage.message);
                 double bubbleSpace = MediaQuery.of(context).size.width / 2.1;
                 return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: chatMessage.isMe
+                      ? CrossAxisAlignment.end
+                      : CrossAxisAlignment.start,
                   children: [
                     Bubble(
-                      margin: BubbleEdges.only(
-                          top: 10, right: bubbleSpace, left: 5),
-                      nip: BubbleNip.leftBottom,
+                      margin: chatMessage.isMe
+                          ? BubbleEdges.only(
+                              top: 10, right: 5, left: bubbleSpace)
+                          : BubbleEdges.only(
+                              top: 10, right: bubbleSpace, left: 5),
+                      nip: chatMessage.isMe
+                          ? BubbleNip.rightBottom
+                          : BubbleNip.leftBottom,
                       elevation: 1,
-                      color: kLightGreyColor,
+                      color: chatMessage.isMe ? kOrangeColor : kLightGreyColor,
                       child: Text(
                         chatMessage.message,
                         style: TextStyle(fontFamily: 'CM Sans Serif'),
                       ),
                     ),
-                    Text(
-                      '${chatMessage.sender}',
-                      style: TextStyle(fontStyle: FontStyle.italic),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 5, top: 2),
+                      child: Text(
+                        chatMessage.isMe ? '' : '${chatMessage.sender}',
+                        style: TextStyle(
+                            fontStyle: FontStyle.italic,
+                            fontFamily: 'CM Sans Serif',
+                            color: kLightGreyColor),
+                      ),
                     )
                   ],
                 );
@@ -228,99 +243,80 @@ class ChatContainer extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            Expanded(
-              flex: 1,
-              child: Row(
-                children: <Widget>[
-                  SizedBox(
-                    width: 4.0,
+            Row(
+              children: <Widget>[
+                SizedBox(
+                  width: 4.0,
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 5.0),
+                  child: Icon(
+                    Icons.camera_alt,
+                    size: 30,
+                    color: kRedColor,
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 5.0),
-                    child: Icon(
-                      Icons.camera_alt,
-                      size: 30,
-                      color: kRedColor,
-                    ),
+                ),
+                SizedBox(
+                  width: 12.0,
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 5.0),
+                  child: Icon(
+                    Icons.photo,
+                    size: 30,
+                    color: kRedColor,
                   ),
-                  SizedBox(
-                    width: 12.0,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 5.0),
-                    child: Icon(
-                      Icons.photo,
-                      size: 30,
-                      color: kRedColor,
-                    ),
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
             SizedBox(
               width: 4.0,
             ),
             Expanded(
-              flex: 3,
-              child: Row(
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.only(top: 4.0),
-                    child: Container(
-                      width: (MediaQuery.of(context).size.width) / 1.8,
-                      height: 38,
-                      decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(0.8),
-                          borderRadius: BorderRadius.circular(20)),
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 12),
-                        child: TextField(
-                          controller: controller,
-
-                          cursorColor: Colors.black,
-                          //controller: _sendMessageController,
-                          decoration: InputDecoration(
-                              border: InputBorder.none,
-                              hintText: 'Text Message',
-                              suffixIcon: Icon(
-                                Icons.face,
-                                color: kRedColor,
-                                size: 28,
-                              )),
-                        ),
-                      ),
+              child: Padding(
+                padding: const EdgeInsets.only(top: 4.0),
+                child: Container(
+                  padding: const EdgeInsets.only(left: 12),
+                  width: (MediaQuery.of(context).size.width) / 1.8,
+                  height: 38,
+                  decoration: BoxDecoration(
+                      color: Colors.white.withOpacity(0.8),
+                      borderRadius: BorderRadius.circular(20)),
+                  child: TextField(
+                    controller: controller,
+                    cursorColor: Colors.black,
+                    //controller: _sendMessageController,
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                      hintText: 'Text Message',
                     ),
                   ),
-                  SizedBox(
-                    width: 16,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 4.0),
-                    child: FlatButton.icon(
-                      onPressed: () {
-                        try {
-                          final messageBloc = context.read<MessageBloc>();
-                          final sender = Auth().getCurrentUser().displayName;
-                          final message = controller.text;
-                          final timestamp = DateTime.now();
-                          messageBloc.add(
-                            SendMessageEvent(
-                              ChatMessage(message, sender, timestamp),
-                            ),
-                          );
-                          controller.text = '';
-                          messageBloc.close();
-                        } catch (_) {}
-                      },
-                      icon: Icon(
-                        Icons.send,
-                        size: 30,
-                        color: kRedColor,
-                      ),
-                      label: Text('Send'),
+                ),
+              ),
+            ),
+            SizedBox(
+              width: 8.0,
+            ),
+            GestureDetector(
+              onTap: () async {
+                try {
+                  // ignore: close_sinks
+                  final messageBloc = context.read<MessageBloc>();
+                  final sender = await FirestoreService().getUserData();
+                  final message = controller.text;
+                  final timestamp = DateTime.now();
+                  messageBloc.add(
+                    SendMessageEvent(
+                      ChatMessage(message, sender.firstName, timestamp),
                     ),
-                  ),
-                ],
+                  );
+                  controller.text = '';
+                } catch (_) {}
+              },
+              child: Icon(
+                Icons.send,
+                size: 30,
+                color: kRedColor,
               ),
             ),
           ],
