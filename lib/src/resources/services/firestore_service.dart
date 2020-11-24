@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:connectivity/connectivity.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:the_chat_app/src/models/chat_user.dart';
+import 'package:the_chat_app/src/resources/services/auth_service.dart';
 
 /*enum MessageType {
   announcement,

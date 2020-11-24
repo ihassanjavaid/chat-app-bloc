@@ -23,6 +23,18 @@ class AuthScreen extends StatelessWidget {
     return Container();
   }
 
+  Widget backgroundPage(BuildContext context) {
+    return Container(
+      height: MediaQuery.of(context).size.height,
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+            colors: [kRedColor, kOrangeColor],
+            begin: Alignment.bottomCenter,
+            end: Alignment.topCenter),
+      ),
+    );
+  }
+
   Widget pageTitle() {
     return Container(
       margin: EdgeInsets.only(top: 86),
@@ -54,100 +66,100 @@ class AuthScreen extends StatelessWidget {
     return Column(
       children: <Widget>[
         Container(
-          // margin: EdgeInsets.only(top: screenHeight / 4),
-          padding: EdgeInsets.only(left: 5, right: 5),
+          margin: EdgeInsets.only(top: MediaQuery.of(context).size.height / 4),
+          padding: EdgeInsets.only(
+            left: 355,
+            right: 35,
+            top: 30,
+            bottom: 30,
+          ),
           child: Card(
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(4.0),
             ),
             elevation: 12,
-            child: Padding(
-              padding: const EdgeInsets.all(30.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  Align(
-                    alignment: Alignment.topLeft,
-                    child: Text(
-                      "Login",
-                      style: TextStyle(
-                        color: kOrangeColor,
-                        fontSize: 28,
-                        fontWeight: FontWeight.w600,
-                      ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: Text(
+                    "Login",
+                    style: TextStyle(
+                      color: kOrangeColor,
+                      fontSize: 28,
+                      fontWeight: FontWeight.w600,
                     ),
                   ),
-                  SizedBox(
-                    height: 15,
-                  ),
-                  CustomTextField(
-                    placeholder: 'Email',
-                    onChanged: (value) {
-                      // this.email = value;
-                    },
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  CustomTextField(
-                    placeholder: "Password",
-                    isPassword: true,
-                    onChanged: (value) {
-                      // this.password = value;
-                    },
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: <Widget>[
-                      /*MaterialButton(
-                        onPressed: () {},
-                        child: Text("Forgot Password ?"),
-                      ),*/
-                      Expanded(
-                        child: Container(),
-                      ),
-                      FlatButton(
-                        child: Text("Login"),
-                        color: kRedColor,
-                        textColor: Colors.white,
-                        padding: EdgeInsets.only(
-                            left: 38, right: 38, top: 15, bottom: 15),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(5)),
-                        onPressed: () async {
-                          /* setState(() {
-                            _showSpinner = true;
-                          });
-                          try {
-                            // login
-                            await _auth.loginUserWithEmailAndPassword(
-                                email: removeSpaces(this.email),
-                                password: this.password);
+                ),
+                SizedBox(
+                  height: 15,
+                ),
+                CustomTextField(
+                  placeholder: 'Email',
+                  onChanged: (value) {
+                    // this.email = value;
+                  },
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                CustomTextField(
+                  placeholder: "Password",
+                  isPassword: true,
+                  onChanged: (value) {
+                    // this.password = value;
+                  },
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: <Widget>[
+                    /*MaterialButton(
+                      onPressed: () {},
+                      child: Text("Forgot Password ?"),
+                    ),*/
+                    Spacer(),
+                    FlatButton(
+                      child: Text("Login"),
+                      color: kRedColor,
+                      textColor: Colors.white,
+                      padding: EdgeInsets.only(
+                          left: 38, right: 38, top: 15, bottom: 15),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5)),
+                      onPressed: () async {
+                        /* setState(() {
+                          _showSpinner = true;
+                        });
+                        try {
+                          // login
+                          await _auth.loginUserWithEmailAndPassword(
+                              email: removeSpaces(this.email),
+                              password: this.password);
 
-                            //await _decideRoute();
-                            Navigator.pushReplacementNamed(
-                                context, MainScreen.id);
-                          } catch (e) {
-                            AlertComponent()
-                                .generateAlert(
-                                    context: context,
-                                    title: "Invalid Credentials",
-                                    description: e.toString())
-                                .show();
-                            print(e);
-                          }
-                          setState(() {
-                            _showSpinner = false;
-                          }); */
-                        },
-                      )
-                    ],
-                  ),
-                ],
-              ),
+                          //await _decideRoute();
+                          Navigator.pushReplacementNamed(
+                              context, MainScreen.id);
+                        } catch (e) {
+                          AlertComponent()
+                              .generateAlert(
+                                  context: context,
+                                  title: "Invalid Credentials",
+                                  description: e.toString())
+                              .show();
+                          print(e);
+                        }
+                        setState(() {
+                          _showSpinner = false;
+                        }); */
+                      },
+                    )
+                  ],
+                ),
+              ],
             ),
           ),
         ),
@@ -259,6 +271,179 @@ class AuthScreen extends StatelessWidget {
                 } */
               },
             ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget signUpCard(BuildContext context) {
+    return Column(
+      children: <Widget>[
+        Container(
+          margin: EdgeInsets.only(top: MediaQuery.of(context).size.height / 5),
+          padding: EdgeInsets.only(left: 10, right: 10),
+          child: Card(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(4.0),
+            ),
+            elevation: 12,
+            child: Padding(
+              padding: const EdgeInsets.all(30.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Align(
+                    alignment: Alignment.topLeft,
+                    child: Text(
+                      "Create Account",
+                      style: TextStyle(
+                        color: kOrangeColor,
+                        fontSize: 28,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 15,
+                  ),
+                  CustomTextField(
+                    placeholder: 'First Name',
+                    onChanged: (value) {
+                      // this.firstName = value;
+                    },
+                  ),
+                  SizedBox(
+                    height: 15,
+                  ),
+                  CustomTextField(
+                    placeholder: 'Last Name',
+                    onChanged: (value) {
+                      // this.lastName = value;
+                    },
+                  ),
+                  SizedBox(
+                    height: 15,
+                  ),
+                  CustomTextField(
+                    placeholder: 'Your Email',
+                    onChanged: (value) {
+                      // this.email = value;
+                    },
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  CustomTextField(
+                    placeholder: 'Your Password',
+                    isPassword: true,
+                    onChanged: (value) {
+                      // this.password = value;
+                    },
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Text(
+                    "Password must be at least 8 characters and include a special character and number",
+                    style: TextStyle(color: Colors.grey),
+                  ),
+                  SizedBox(
+                    height: 5,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: <Widget>[
+                      Expanded(
+                        child: Container(),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(0, 12, 0, 0),
+                        child: FlatButton(
+                          child: Text("Sign Up"),
+                          color: kOrangeColor,
+                          textColor: Colors.white,
+                          padding: EdgeInsets.only(
+                              left: 38, right: 38, top: 15, bottom: 15),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(5)),
+                          onPressed: () async {
+                            /* setState(() {
+                              _showSpinner = true;
+                            });
+                            try {
+                              await _auth.registerUser(
+                                  email: removeSpaces(this.email),
+                                  password: this.password);
+
+                              await _firestoreService.registerUser(
+                                  chatUser: ChatUser(
+                                this.firstName,
+                                this.lastName,
+                                this.email,
+                              ));
+
+                              Navigator.pushReplacementNamed(
+                                  context, MainScreen.id);
+                            } catch (e) {
+                              AlertComponent()
+                                  .generateAlert(
+                                      context: context,
+                                      title: "Error",
+                                      description: e)
+                                  .show();
+                              print(e);
+                            }
+                            setState(() {
+                              _showSpinner = false;
+                            }); */
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            SizedBox(
+              height: 40,
+            ),
+            Text(
+              "Already have an account?",
+              style: TextStyle(color: Colors.white),
+            ),
+            FlatButton(
+              onPressed: () {
+                /*  setState(() {
+                  _authMode = AuthMode.LOGIN;
+                }); */
+              },
+              textColor: Colors.white,
+              child: Text(
+                "Login",
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+              ),
+            )
+          ],
+        ),
+        Align(
+          alignment: Alignment.bottomCenter,
+          child: FlatButton(
+            child: Text(
+              "Terms & Conditions",
+              style: TextStyle(
+                color: Colors.white,
+              ),
+            ),
+            onPressed: () {
+              // TODO: Add functionality
+            },
           ),
         ),
       ],
