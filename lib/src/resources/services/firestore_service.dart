@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
-import 'package:the_chat_app/src/models/user_model.dart';
+import 'package:the_chat_app/src/models/chat_user.dart';
 
 /*enum MessageType {
   announcement,
