@@ -28,6 +28,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       yield AuthLogin();
     } else if (event is AuthenticateEvent) {
       bool flag;
+
+      // Show loading screen
       yield AuthLoading();
 
       // Attempt to authenticate

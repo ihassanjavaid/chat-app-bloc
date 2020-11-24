@@ -5,7 +5,6 @@ import 'package:the_chat_app/src/blocs/chat_bloc/chat_bloc.dart';
 import 'package:the_chat_app/src/blocs/message_bloc/message_bloc.dart';
 import 'package:the_chat_app/src/models/chat_model.dart';
 import 'package:the_chat_app/src/models/chat_size.dart';
-import 'package:the_chat_app/src/resources/services/auth_service.dart';
 import 'package:the_chat_app/src/resources/services/firestore_service.dart';
 import 'package:the_chat_app/src/resources/utilities/constants.dart';
 
@@ -18,13 +17,11 @@ class ChatContainer extends StatelessWidget {
 
     return GestureDetector(
       onVerticalDragUpdate: (drag) {
-        // ignore: close_sinks
-        final sizeBloc = context.read<ChatBloc>();
         size.setDy = drag.primaryDelta;
-        sizeBloc.add(ChatSizeUpdate(size));
+        context.read<ChatBloc>().add(ChatSizeUpdate(size));
       },
       child: BlocConsumer<ChatBloc, ChatState>(
-        listener: (context, state) {
+        listener: (_, state) {
           // TODO: implement listener
         },
         builder: (_, state) {

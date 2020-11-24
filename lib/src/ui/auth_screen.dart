@@ -19,8 +19,6 @@ class AuthScreen extends StatelessWidget {
           builder: (_, state) {
             if (state is AuthInitial) {
               context.read<AuthBloc>().add(InitializeAuth());
-            } else if (state is AuthSuccess) {
-              Navigator.pushReplacementNamed(context, MainScreen.id);
             } else if (state is AuthLoading) {
               return Container(
                 height: MediaQuery.of(context).size.height,
@@ -37,14 +35,8 @@ class AuthScreen extends StatelessWidget {
                   pageTitle(),
                 ],
               );
-            } else if (state is AuthFailed) {
-              AlertComponent()
-                  .generateAlert(
-                    context: context,
-                    title: "Failed to authenticate",
-                    description: state.failMessage,
-                  )
-                  .show();
+            } else if (state is AuthSuccess) {
+              return Container();
             }
             return Stack(
               children: [
@@ -54,7 +46,19 @@ class AuthScreen extends StatelessWidget {
               ],
             );
           },
-          listener: (_, authState) {},
+          listener: (_, state) {
+            if (state is AuthSuccess) {
+              Navigator.pushReplacementNamed(context, MainScreen.id);
+            } else if (state is AuthFailed) {
+              AlertComponent()
+                  .generateAlert(
+                    context: context,
+                    title: "Failed to authenticate",
+                    description: state.failMessage,
+                  )
+                  .show();
+            }
+          },
         ),
       ),
     );
@@ -111,13 +115,13 @@ class AuthScreen extends StatelessWidget {
             left: 5,
             right: 5,
           ),
-          child: Padding(
-            padding: const EdgeInsets.all(30),
-            child: Card(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(4.0),
-              ),
-              elevation: 12,
+          child: Card(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(4.0),
+            ),
+            elevation: 12,
+            child: Padding(
+              padding: const EdgeInsets.all(30.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
