@@ -11,8 +11,10 @@ class AuthRegister extends AuthState {}
 
 class AuthLoading extends AuthState {}
 
-class AuthSuccess extends AuthState {
-  final AuthUser user;
+class AuthSuccess extends AuthState {}
 
-  AuthSuccess(this.user);
+class AuthFailed extends AuthState {
+  final String failMessage;
+
+  AuthFailed(this.failMessage);
 }

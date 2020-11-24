@@ -60,8 +60,6 @@ class Auth {
         // changed from AuthResult
         UserCredential authResult =
             await _auth.signInWithCredential(credential);
-        // changes from FirebaseUser
-        User user = await _auth.currentUser;
       }
     } catch (e) {
       print(e.toString());

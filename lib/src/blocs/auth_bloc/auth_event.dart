@@ -3,19 +3,28 @@ part of 'auth_bloc.dart';
 @immutable
 abstract class AuthEvent {}
 
-class LoginEvent extends AuthEvent {}
+class InitializeAuth extends AuthEvent {}
 
-class RegisterEvent extends AuthEvent {}
+class ShowRegisterationEvent extends AuthEvent {}
 
-class CredentialsEntryEvent extends AuthEvent {
-  final String updatedVal;
-  final CredentialType type;
+class ShowLoginEvent extends AuthEvent {}
 
-  CredentialsEntryEvent(this.updatedVal, this.type);
+class AuthenticateEvent extends AuthEvent {
+  final AuthType type;
+
+  AuthenticateEvent(this.type);
 }
 
-class AuthSuccessEvent extends AuthEvent {
-  final AuthUser user;
+class CredentialsEntryEvent extends AuthEvent {
+  final String credential;
+  final CredentialType type;
 
-  AuthSuccessEvent(this.user);
+  CredentialsEntryEvent(this.credential, this.type);
+}
+
+class RegistrationDataEntry extends AuthEvent {
+  final String data;
+  final String dataFor;
+
+  RegistrationDataEntry(this.data, this.dataFor);
 }
