@@ -15,47 +15,50 @@ class ChatContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     ChatSize size;
 
-    return GestureDetector(
-      onVerticalDragUpdate: (drag) {
-        size.setDy = drag.primaryDelta;
-        context.read<ChatBloc>().add(ChatSizeUpdate(size));
-      },
-      child: BlocConsumer<ChatBloc, ChatState>(
-        listener: (_, state) {
-          // TODO: implement listener
+    return Align(
+      alignment: Alignment.bottomCenter,
+      child: GestureDetector(
+        onVerticalDragUpdate: (drag) {
+          size.setDy = drag.primaryDelta;
+          context.read<ChatBloc>().add(ChatSizeUpdate(size));
         },
-        builder: (_, state) {
-          if (size == null) {
-            size = ChatSize(
-              height: MediaQuery.of(context).size.height * 0.84,
-              width: MediaQuery.of(context).size.width,
-              screenMaxHeight: MediaQuery.of(context).size.height,
-              screenMaxWidth: MediaQuery.of(context).size.width,
-              maxHeightConstraint: 0.85,
-            );
-          }
-          if (state is ChatMoving) {
-            size = state.size;
-          } else if (state is ChatCollapsed) {
-            return getCollapsedChat();
-          }
-          return Align(
-            alignment: Alignment.bottomCenter,
-            child: AnimatedContainer(
-              duration: Duration(milliseconds: 150),
-              height: size.height,
-              width: size.width,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(24.0),
-                  topRight: Radius.circular(24.0),
+        child: BlocConsumer<ChatBloc, ChatState>(
+          listener: (_, state) {
+            // TODO: implement listener
+          },
+          builder: (_, state) {
+            if (size == null) {
+              size = ChatSize(
+                height: MediaQuery.of(context).size.height * 0.84,
+                width: MediaQuery.of(context).size.width,
+                screenMaxHeight: MediaQuery.of(context).size.height,
+                screenMaxWidth: MediaQuery.of(context).size.width,
+                maxHeightConstraint: 0.85,
+              );
+            }
+            if (state is ChatMoving) {
+              size = state.size;
+            } else if (state is ChatCollapsed) {
+              return getCollapsedChat();
+            }
+            return Align(
+              alignment: Alignment.bottomCenter,
+              child: AnimatedContainer(
+                duration: Duration(milliseconds: 150),
+                height: size.height,
+                width: size.width,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(24.0),
+                    topRight: Radius.circular(24.0),
+                  ),
                 ),
+                child: getWidgets(context),
               ),
-              child: getWidgets(context),
-            ),
-          );
-        },
+            );
+          },
+        ),
       ),
     );
   }
@@ -72,102 +75,105 @@ class ChatContainer extends StatelessWidget {
   }
 
   Widget getChatHeader({bool collapsed = false}) {
-    return Column(
-      children: [
-        Container(
-          height: 15.5,
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(24),
-                topRight: Radius.circular(24.0),
+    return Align(
+      alignment: Alignment.bottomCenter,
+      child: Column(
+        children: [
+          Container(
+            height: 15.5,
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(24),
+                  topRight: Radius.circular(24.0),
+                ),
+                color: kLightGreyColor),
+            child: Padding(
+              padding: const EdgeInsets.only(
+                top: 12.0,
+                left: 135,
+                right: 135,
               ),
-              color: kLightGreyColor),
-          child: Padding(
-            padding: const EdgeInsets.only(
-              top: 12.0,
-              left: 135,
-              right: 135,
-            ),
-            child: Divider(
-              color: Colors.black54,
-              thickness: 5,
+              child: Divider(
+                color: Colors.black54,
+                thickness: 5,
+              ),
             ),
           ),
-        ),
-        PreferredSize(
-          preferredSize: Size.fromHeight(20),
-          child: AppBar(
-            backgroundColor: kLightGreyColor,
-            elevation: 0,
-            leading: collapsed
-                ? Container()
-                : FlatButton(
-                    onPressed: () {
-                      // TODO: Add functionality
-                    },
-                    child: Icon(
-                      Icons.arrow_back_ios,
-                      color: kRedColor,
-                    )),
-            title: Row(
-              children: <Widget>[
-                Container(
-                  width: 40,
-                  height: 40,
-                  decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      image: DecorationImage(
-                          image: NetworkImage(
-                              "https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60"),
-                          fit: BoxFit.cover)),
+          PreferredSize(
+            preferredSize: Size.fromHeight(20),
+            child: AppBar(
+              backgroundColor: kLightGreyColor,
+              elevation: 0,
+              leading: collapsed
+                  ? Container()
+                  : FlatButton(
+                      onPressed: () {
+                        // TODO: Add functionality
+                      },
+                      child: Icon(
+                        Icons.arrow_back_ios,
+                        color: kRedColor,
+                      )),
+              title: Row(
+                children: <Widget>[
+                  Container(
+                    width: 40,
+                    height: 40,
+                    decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        image: DecorationImage(
+                            image: NetworkImage(
+                                "https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60"),
+                            fit: BoxFit.cover)),
+                  ),
+                  SizedBox(
+                    width: 15,
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(
+                        'Group\tA',
+                        style: TextStyle(
+                            fontSize: 18,
+                            //fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                            fontFamily: 'CM Sans Serif'),
+                      ),
+                      SizedBox(
+                        height: 3,
+                      ),
+                      Text(
+                        'You, Elvin, Arrow',
+                        style: TextStyle(
+                            color: Colors.black.withOpacity(0.4), fontSize: 14),
+                      )
+                    ],
+                  )
+                ],
+              ),
+              actions: <Widget>[
+                Icon(
+                  Icons.phone,
+                  color: kRedColor,
+                  size: 32,
                 ),
                 SizedBox(
                   width: 15,
                 ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      'Group\tA',
-                      style: TextStyle(
-                          fontSize: 18,
-                          //fontWeight: FontWeight.bold,
-                          color: Colors.black,
-                          fontFamily: 'CM Sans Serif'),
-                    ),
-                    SizedBox(
-                      height: 3,
-                    ),
-                    Text(
-                      'You, Elvin, Arrow',
-                      style: TextStyle(
-                          color: Colors.black.withOpacity(0.4), fontSize: 14),
-                    )
-                  ],
-                )
+                Icon(
+                  Icons.videocam_sharp,
+                  color: kRedColor,
+                  size: 35,
+                ),
+                SizedBox(
+                  width: 15,
+                ),
               ],
             ),
-            actions: <Widget>[
-              Icon(
-                Icons.phone,
-                color: kRedColor,
-                size: 32,
-              ),
-              SizedBox(
-                width: 15,
-              ),
-              Icon(
-                Icons.videocam_sharp,
-                color: kRedColor,
-                size: 35,
-              ),
-              SizedBox(
-                width: 15,
-              ),
-            ],
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
@@ -232,7 +238,7 @@ class ChatContainer extends StatelessWidget {
 
   Widget getChatControl(BuildContext context) {
     return Container(
-      height: 60,
+      // height: 60,
       width: double.infinity,
       decoration: BoxDecoration(color: kLightGreyColor),
       child: Padding(
